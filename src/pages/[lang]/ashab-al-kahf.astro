@@ -30,6 +30,7 @@ const publishedClaims = atlas.publishedClaims.map((claim) => ({
     ),
   })),
 }));
+const withheldCount = atlas.summary.unlocated + atlas.summary.blocked;
 const copy = isUrdu
   ? {
       eyebrow: "اصحابِ کہف",
@@ -147,17 +148,29 @@ const copy = isUrdu
     </section>
   )}
 
-  <section class="withheld-section" aria-labelledby="withheld-title">
-    <div class="withheld-copy">
-      <p class="eyebrow">{isUrdu ? "پہلا دروازہ" : "The first threshold"}</p>
-      <h2 id="withheld-title">{copy.read}</h2>
-      <p>{copy.readBody}</p>
-    </div>
-    <div class="withheld-mark" aria-hidden="true">
-      <span>◌</span>
-      <small>{isUrdu ? "رجسٹر دیکھیں" : "see the ledger"}</small>
-    </div>
-  </section>
+  {withheldCount > 0 && (
+    <section class="withheld-section" aria-labelledby="withheld-title">
+      <div class="withheld-copy">
+        <p class="eyebrow">{isUrdu ? "پہلا دروازہ" : "The first threshold"}</p>
+        <h2 id="withheld-title">
+          {publishedClaims.length > 0
+            ? (isUrdu ? `${withheldCount} دعوے ابھی روک دیے گئے ہیں۔` : `${withheldCount} claims remain withheld.`)
+            : copy.read}
+        </h2>
+        <p>
+          {publishedClaims.length > 0
+            ? (isUrdu
+                ? "صرف مکمل ماخذی قطار والے دعوے دکھائے جاتے ہیں؛ باقی جانچ تک باہر رہتے ہیں۔"
+                : "Only claims with complete source rows appear in the reading; the rest stay out until checked.")
+            : copy.readBody}
+        </p>
+      </div>
+      <div class="withheld-mark" aria-hidden="true">
+        <span>◌</span>
+        <small>{isUrdu ? "رجسٹر دیکھیں" : "see the ledger"}</small>
+      </div>
+    </section>
+  )}
 
   <section class="ledger-callout">
     <p>{isUrdu ? "عوامی جانچ کا ریکارڈ" : "Public verification"}</p>
