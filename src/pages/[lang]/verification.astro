@@ -1,0 +1,114 @@
+---
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { loadAtlas } from "../../lib/atlas";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ur" } }];
+}
+
+const lang = Astro.params.lang === "ur" ? "ur" : "en";
+const isUrdu = lang === "ur";
+const atlas = await loadAtlas();
+const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
+  title: { en: "The Companions of the Cave", ur: "اصحابِ کہف" },
+  description: { en: "", ur: "" },
+};
+const copy = isUrdu
+  ? {
+      title: "ہر خلا دکھائی دیتا ہے",
+      lead: "یہ ریکارڈ شائع شدہ دعووں کے ساتھ ان دعووں کو بھی دکھاتا ہے جو ابھی جانچ کے منتظر ہیں۔",
+      total: "کل دعوے",
+      verified: "واقع",
+      secondary: "ثانوی",
+      unlocated: "غیر واقع",
+      blocked: "روکے گئے",
+      ledger: "توثیقی قطار",
+      withheld: "یہ دعویٰ روک دیا گیا ہے",
+      source: "ماخذ",
+      notes: "نوٹس",
+      back: "مطالعے پر واپس جائیں",
+      explanation: "located: no کا مطلب ہے کہ دعویٰ موجود ہے، مگر ابھی اشاعت کے لیے اہل نہیں۔",
+    }
+  : {
+      title: "Every gap stays visible.",
+      lead: "This ledger shows the published record and the claims still waiting for a human check.",
+      total: "Total claims",
+      verified: "Located",
+      secondary: "Secondary",
+      unlocated: "Unlocated",
+      blocked: "Blocked",
+      ledger: "Verification ledger",
+      withheld: "This claim is withheld",
+      source: "Source",
+      notes: "Notes",
+      back: "Return to the reading",
+      explanation: "located: no means the claim exists in the working record but is not eligible for publication yet.",
+    };
+const metricCards = [
+  { label: copy.total, value: atlas.summary.total, className: "metric-dark" },
+  { label: copy.verified, value: atlas.summary.verified, className: "metric-green" },
+  { label: copy.secondary, value: atlas.summary.secondary, className: "metric-blue" },
+  { label: copy.unlocated, value: atlas.summary.unlocated, className: "metric-amber" },
+  { label: copy.blocked, value: atlas.summary.blocked, className: "metric-red" },
+];
+---
+
+<AtlasLayout
+  lang={lang}
+  title={isUrdu ? "توثیقی ریکارڈ" : "Verification ledger"}
+  description={isUrdu ? "قرآنی بیانیہ ایٹلس کا عوامی توثیقی ریکارڈ۔" : "The public verification ledger for the Quranic Evidence Atlas."}
+  current="verification"
+>
+  <section class="verification-hero">
+    <div>
+      <p class="eyebrow">{isUrdu ? "عوامی ریکارڈ" : "PUBLIC LEDGER"}</p>
+      <h1>{copy.title}</h1>
+      <p class="hero-lead">{copy.lead}</p>
+    </div>
+    <a class="button button-dark" href={`/${lang}/ashab-al-kahf`}>{copy.back}</a>
+  </section>
+
+  <section class="metrics-grid" aria-label={isUrdu ? "توثیقی اعداد" : "Verification counts"}>
+    {metricCards.map((metric) => (
+      <article class:list={["metric-card", metric.className]}>
+        <span>{metric.label}</span>
+        <strong>{metric.value}</strong>
+      </article>
+    ))}
+  </section>
+
+  <section class="ledger-section" aria-labelledby="ledger-title">
+    <div class="section-heading compact-heading">
+      <p class="eyebrow">{copy.ledger}</p>
+      <h2 id="ledger-title">{isUrdu ? "دعوے کی حالت، ماخذ کے ساتھ" : "Claim state, kept beside the source."}</h2>
+      <p>{copy.explanation}</p>
+    </div>
+
+    <div class="ledger-list">
+      {atlas.gateResults.map((result) => {
+        const claim = atlas.claims.find((candidate) => candidate.id === result.claimId);
+        const rows = atlas.ledgerRows.filter((row) => row.claim === result.claimId);
+        return (
+          <article class="ledger-row">
+            <div class="ledger-status" data-state={result.state}>
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>{result.state === "unlocated" ? copy.unlocated : result.state}</span>
+            </div>
+            <div class="ledger-main">
+              <p class="claim-id"><bdi>{result.claimId}</bdi></p>
+              <h3>{copy.withheld}</h3>
+              <p>{isUrdu ? "اصل بیان اس وقت تک نہیں دکھایا جائے گا جب تک ماخذ کا صفحہ جانچ نہ لیا جائے۔" : "The statement stays out of the reading until its source page is checked."}</p>
+            </div>
+            <div class="ledger-source">
+              <span>{copy.source}</span>
+              {rows.map((row) => (
+                <p><bdi>{row.source}</bdi> · <bdi>{row.edition}</bdi></p>
+              ))}
+              <small>{rows[0]?.notes}</small>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+</AtlasLayout>
