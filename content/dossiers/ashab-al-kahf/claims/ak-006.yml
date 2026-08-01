@@ -1,0 +1,15 @@
+id: ak-006
+statement:
+  en: "Al-Tabari records two readings of the word ‘marfiqan’ in Qur’an 18:16 and says that they carry the same meaning."
+  ur: "طبری قرآن 18:16 کے لفظ «مَرْفَقًا» کی دو قراءتیں نقل کرتے ہیں اور کہتے ہیں کہ دونوں کا معنی ایک ہے۔"
+status: reported-only
+source_class: tafsir
+independence_group: g-kahf-18-16
+attributions:
+  - source: tabari-jami-al-bayan
+    edition: bulaq-amiriyya
+    page: 64
+    tradition: sunni
+evaluation: []
+supersedes: null
+superseded_by: null
