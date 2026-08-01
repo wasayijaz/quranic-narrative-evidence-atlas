@@ -1,0 +1,15 @@
+id: ak-001
+statement:
+  en: "In al-Tabari's reading of Qur'an 18:16, the youths withdraw to the cave after separating from their people and what they worship."
+  ur: "طبری کی قرآن 18:16 کی تفسیر میں نوجوان اپنی قوم اور جن کی وہ عبادت کرتے تھے، ان سے الگ ہونے کے بعد غار میں پناہ لیتے ہیں۔"
+status: reported-only
+source_class: tafsir
+independence_group: g-cave-refuge
+attributions:
+  - source: tabari-jami-al-bayan
+    edition: bulaq-amiriyya
+    page: 64
+    tradition: sunni
+evaluation: []
+supersedes: null
+superseded_by: null
