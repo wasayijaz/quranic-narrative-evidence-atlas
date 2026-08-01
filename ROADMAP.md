@@ -183,6 +183,8 @@ Add **Thamud / al-Hijr** (material evidence versus textual attestation ? the dis
 
 By end of M1 the schemas, the house voice in both languages, the diagram vocabulary, and the ledger format are settled and stop changing. Reusable person, place, and qawm records begin paying back.
 
+**Implementation checkpoint:** the current product has the reusable story route and bilingual Quran-anchor-only shells for Thamud / al-Hijr and Yusuf. The M1 exit is not met yet: neither shell has reported claims, tafsir source records, or a completed verification ledger.
+
 **Exit:** three dossiers live. Second and third measurably cheaper than the first.
 
 ### M2 ? Launch corpus (10 dossiers)
