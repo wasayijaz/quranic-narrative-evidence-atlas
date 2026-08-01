@@ -8,7 +8,7 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang === "ur" ? "ur" : "en";
 const isUrdu = lang === "ur";
-const atlas = await loadAtlas();
+const atlas = await loadAtlas("ashab-al-kahf");
 const tabari = atlas.sources.find((source) => source.id === "tabari-jami-al-bayan");
 const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
   title: { en: "The Companions of the Cave", ur: "اصحابِ کہف" },
@@ -16,6 +16,20 @@ const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? 
 };
 const title = dossier.title[lang];
 const description = dossier.description[lang];
+const publishedClaims = atlas.publishedClaims.map((claim) => ({
+  claim,
+  result: atlas.resultByClaim.get(claim.id),
+  sources: claim.attributions.map((attribution) => ({
+    attribution,
+    source: atlas.sources.find((candidate) => candidate.id === attribution.source),
+    row: atlas.ledgerRows.find(
+      (candidate) =>
+        candidate.claim === claim.id &&
+        candidate.source === attribution.source &&
+        candidate.edition === attribution.edition,
+    ),
+  })),
+}));
 const copy = isUrdu
   ? {
       eyebrow: "اصحابِ کہف",
@@ -94,6 +108,44 @@ const copy = isUrdu
       </article>
     </div>
   </section>
+
+  {publishedClaims.length > 0 && (
+    <section class="published-section" aria-labelledby="published-title">
+      <div class="section-heading">
+        <p class="eyebrow">{isUrdu ? "جانچا ہوا متن" : "Gate-safe reading"}</p>
+        <h2 id="published-title">
+          {isUrdu ? "جو دعوے صفحے تک پہنچ چکے ہیں۔" : "What has made it through the page check."}
+        </h2>
+        <p>
+          {isUrdu
+            ? "یہاں صرف وہ دعوے دکھائے جاتے ہیں جن کی ماخذی قطار مکمل ہو چکی ہے۔"
+            : "Only claims whose active ledger rows are complete appear in the reading."}
+        </p>
+      </div>
+
+      <div class="published-list">
+        {publishedClaims.map(({ claim, result, sources }) => (
+          <article class="published-card">
+            <div class="card-topline">
+              <span><bdi>{claim.id}</bdi></span>
+              <span>{result?.state === "secondary" ? (isUrdu ? "ثانوی" : "secondary") : (isUrdu ? "واقع" : "verified")}</span>
+            </div>
+            <h3>{claim.statement[lang]}</h3>
+            <div class="published-sources">
+              {sources.map(({ attribution, source, row }) => (
+                <p>
+                  <strong>{source?.work_title_en ?? attribution.source}</strong>
+                  <span>{attribution.edition}</span>
+                  {attribution.page && <span>{isUrdu ? `صفحہ ${attribution.page}` : `page ${attribution.page}`}</span>}
+                  {row?.checked_by && <span>{isUrdu ? `جانچا: ${row.checked_by}` : `checked by ${row.checked_by}`}</span>}
+                </p>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
 
   <section class="withheld-section" aria-labelledby="withheld-title">
     <div class="withheld-copy">
