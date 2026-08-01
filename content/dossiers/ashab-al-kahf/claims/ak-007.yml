@@ -1,0 +1,15 @@
+id: ak-007
+statement:
+  en: "Al-Tabari chooses one reading of ‘marfiqan’ because he describes it as the more eloquent and more familiar form in Arabic."
+  ur: "طبری «مَرْفَقًا» کی ایک قراءت کو اس لیے اختیار کرتے ہیں کہ ان کے بیان میں وہ عربی کے لحاظ سے زیادہ فصیح اور معروف ہے۔"
+status: reported-only
+source_class: tafsir
+independence_group: g-kahf-18-16
+attributions:
+  - source: tabari-jami-al-bayan
+    edition: bulaq-amiriyya
+    page: 64
+    tradition: sunni
+evaluation: []
+supersedes: null
+superseded_by: null
