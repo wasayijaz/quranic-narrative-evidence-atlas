@@ -1,0 +1,24 @@
+id: tabari-jami-al-bayan
+work_title_ar: "جامع البيان عن تأويل آي القرآن"
+work_title_en: "Jami' al-Bayan 'an Ta'wil Ay al-Qur'an"
+author: "Abu Ja'far Muhammad ibn Jarir al-Tabari"
+author_died_hijri: 310
+author_died_ce: 923
+tradition: sunni
+source_class: tafsir
+edition:
+  id: bulaq-amiriyya
+  publisher: "Al-Matba'a al-Kubra al-Amiriyya"
+  place: "Bulaq, Egypt"
+  language: ar
+  volumes: null
+rights:
+  status: public-domain
+  basis: "Author died 310 AH. Work is out of copyright in all relevant jurisdictions."
+  redistributable: false
+access:
+  kind: page-images
+  locator: "archive.org/details/dli.ernet.431838"
+  scanned_by: "C-DAC Noida, from Maulana Azad Library, Aligarh Muslim University"
+  collection: "Digital Library of India"
+  notes: "PDF and single-page-processed JP2 ZIP available."
