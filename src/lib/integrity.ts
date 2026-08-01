@@ -95,11 +95,24 @@ export function findIntegrityErrors({
       errors.push(`The ledger refers to claim ${row.claim}, but no claim file exists.`);
     }
 
+    if (row.source && !sourceIds.has(row.source)) {
+      errors.push(`Ledger row for claim ${row.claim ?? "an unknown claim"} refers to ${row.source}, but no source record exists.`);
+      continue;
+    }
+
+    if (row.source && row.edition && !editions.has(sourceEditionKey(row.source, row.edition))) {
+      errors.push(
+        `Ledger row for claim ${row.claim ?? "an unknown claim"} refers to ${row.source}, ${row.edition}, but that edition is not in the source registry.`,
+      );
+    }
+
     if (row.claim && row.source) {
       const claim = claims.find((candidate) => candidate.id === row.claim);
-      const citesSource = claim?.attributions?.some((attribution) => attribution.source === row.source);
-      if (claim && !citesSource) {
-        errors.push(`Ledger row for claim ${row.claim} refers to ${row.source}, but the claim does not cite that source.`);
+      const citesEdition = claim?.attributions?.some(
+        (attribution) => attribution.source === row.source && attribution.edition === row.edition,
+      );
+      if (claim && !citesEdition) {
+        errors.push(`Ledger row for claim ${row.claim} refers to ${row.source}, ${row.edition}, but the claim does not cite that edition.`);
       }
     }
   }
