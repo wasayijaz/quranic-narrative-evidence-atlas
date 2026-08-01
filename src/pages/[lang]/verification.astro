@@ -111,4 +111,25 @@ const metricCards = [
       })}
     </div>
   </section>
+
+  <section class="correction-section" aria-labelledby="correction-title">
+    <div class="section-heading compact-heading">
+      <p class="eyebrow">{isUrdu ? "اصلاحی ریکارڈ" : "Correction log"}</p>
+      <h2 id="correction-title">{isUrdu ? "پرانے قطاریں محفوظ رہتی ہیں" : "Old rows stay visible."}</h2>
+      <p>{isUrdu ? "درستگی کسی پرانی قطار کو مٹاتی نہیں؛ نئی قطار اسے replace کرتی ہے اور وجہ یہاں رہتی ہے۔" : "A correction never deletes the old row. A new row supersedes it, while the reason remains visible here."}</p>
+    </div>
+    <div class="correction-list">
+      {atlas.corrections.length === 0 ? (
+        <p class="empty-correction">{isUrdu ? "ابھی کوئی اصلاح درج نہیں۔" : "No corrections recorded yet."}</p>
+      ) : (
+        atlas.corrections.map((row) => (
+          <article class="correction-row">
+            <p><bdi>{row.claim}</bdi> · <bdi>{row.source}</bdi></p>
+            <p>{row.notes}</p>
+            <small>{isUrdu ? "نئی قطار:" : "Superseded by:"} <bdi>{row.superseded_by}</bdi></small>
+          </article>
+        ))
+      )}
+    </div>
+  </section>
 </AtlasLayout>
