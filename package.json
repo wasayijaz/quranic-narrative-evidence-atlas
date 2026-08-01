@@ -8,12 +8,13 @@
   "scripts": {
     "dev": "astro dev",
     "prebuild": "node --experimental-strip-types scripts/check.mjs",
-    "build": "astro build && npm run test:rendered",
+    "build": "astro build && npm run test:rendered && npm run test:product",
     "test:gate": "node --experimental-strip-types scripts/test-gate.mjs",
     "test:ledger": "node --experimental-strip-types scripts/test-ledger.mjs",
     "test:integrity": "node --experimental-strip-types scripts/test-integrity.mjs",
     "test:scope": "node --experimental-strip-types scripts/test-scope.mjs",
     "test:rendered": "node --experimental-strip-types scripts/test-rendered.mjs",
+    "test:product": "node --experimental-strip-types scripts/test-product-slice.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

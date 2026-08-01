@@ -27,13 +27,13 @@ const [englishDossier, urduDossier, englishVerification, urduVerification, ledge
 ]);
 
 assertIncludes(englishDossier, "Not reviewed by a scholarly board", "English dossier disclosure is missing.");
-assertIncludes(urduDossier, "اس مواد کو کسی علمی بورڈ نے نہیں پرکھا", "Urdu dossier disclosure is missing.");
+assertIncludes(urduDossier, "?? ???? ?? ??? ???? ???? ?? ???? ?????", "Urdu dossier disclosure is missing.");
 assertIncludes(englishVerification, "Parity gaps", "English parity metric is missing.");
-assertIncludes(urduVerification, "تکمیلی فرق", "Urdu parity metric is missing.");
+assertIncludes(urduVerification, "?????? ???", "Urdu parity metric is missing.");
 assertIncludes(englishVerification, "Source class", "English claim source-class field is missing.");
-assertIncludes(urduVerification, "ماخذ کی قسم", "Urdu claim source-class field is missing.");
+assertIncludes(urduVerification, "???? ?? ???", "Urdu claim source-class field is missing.");
 assertIncludes(englishVerification, "Shia source", "English Shia parity lane is missing.");
-assertIncludes(urduVerification, "شیعی ماخذ", "Urdu Shia parity lane is missing.");
+assertIncludes(urduVerification, "???? ????", "Urdu Shia parity lane is missing.");
 
 const ledgerRows = parse(ledgerText);
 const claimFiles = (await readdir(claimsRoot)).filter((file) => file.endsWith(".yml")).sort();

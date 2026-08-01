@@ -1,0 +1,168 @@
+---
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { loadAtlas } from "../../lib/atlas";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ur" } }];
+}
+
+const lang = Astro.params.lang === "ur" ? "ur" : "en";
+const isUrdu = lang === "ur";
+const atlas = await loadAtlas("ashab-al-kahf");
+const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
+  title: { en: "The Companions of the Cave", ur: "?????? ???" },
+  description: { en: "", ur: "" },
+};
+const disclosure = dossier.disclosure?.[lang] ?? (isUrdu
+  ? "?? ???? ?? ??? ???? ???? ?? ???? ?????? ??????? ????? ??? ?? ??? ?? ???? ????"
+  : "Not reviewed by a scholarly board. Corrections are logged publicly.");
+const copy = isUrdu
+  ? {
+      eyebrow: "??????? ? ???? ???????",
+      title: "??? ?? ????? ???? ?? ?????",
+      lead: "???? ????? ????? ???? ??? ??? ?? ????? ??? ??? projector-ready outline ??????? ?? workspace ????? ??? ???? learner profile ?? public comment ????? ???? ?????",
+      learn: "?????? ?????",
+      research: "????? ???",
+      setup: "??? ?? ?????",
+      band: "?????? ????",
+      bandValue: "10?12 ???",
+      language: "????",
+      languageValue: "????",
+      duration: "???????",
+      durationValue: "30 ???",
+      context: "????",
+      contextValue: "????? ????? ??? ????? ???",
+      choose: "??? ?? blocks ????? ????",
+      chosen: "????? blocks",
+      noSelection: "???? ???? block ????? ?????",
+      include: "???? ????",
+      anchor: "????? anchor",
+      outline: "projector outline",
+      outlineBody: "?? ????? beat ?? ??? ??? ?? ?????? ??? ????? ??? ????? ?????? ?? ???? ??? ?????",
+      question: "???? ?? ??? ????",
+      questionBody: "??? ??? ??? ???? ??? ??? ??? ?? ??? ?? ??? ???? ??? ???? ?????? ??? ???",
+      noProfiles: "?? tool ????? outline ????? ??? learner data? comments? ?? account ???? ??????",
+    }
+  : {
+      eyebrow: "TEACH ? TEACHER STUDIO",
+      title: "A lesson outline, kept close to the source.",
+      lead: "Select beats, set the language and duration, then shape a projector-ready outline. This workspace is local; it does not save learner profiles or public comments.",
+      learn: "Story Canvas",
+      research: "Evidence Desk",
+      setup: "Lesson setup",
+      band: "Learner band",
+      bandValue: "10?12 years",
+      language: "Language",
+      languageValue: "English",
+      duration: "Duration",
+      durationValue: "30 minutes",
+      context: "Context",
+      contextValue: "Quran anchors and evidence boundaries",
+      choose: "Choose lesson blocks",
+      chosen: "blocks selected",
+      noSelection: "No block selected yet.",
+      include: "Include",
+      anchor: "Quran anchor",
+      outline: "Projector outline",
+      outlineBody: "Present each selected beat with its passage reference, one question, and one evidence boundary.",
+      question: "Classroom question",
+      questionBody: "What is explicit in the passage, and what would need a separate source check?",
+      noProfiles: "This tool makes a local outline; it creates no learner data, comments, or account.",
+    };
+---
+
+<AtlasLayout
+  lang={lang}
+  title={isUrdu ? "???? ??????? ? ?????? ???" : "Teacher Studio ? Ashab al-Kahf"}
+  description={isUrdu ? "????? ?????? ?? ??? ?? ????? ???? ????? ?? ????" : "A local lesson-outline workspace built from Quran anchors."}
+  current="teach"
+  disclosure={disclosure}
+  disclosureLinkLabel={isUrdu ? "????? ???? ?? ??????" : "Public verification ledger"}
+>
+  <section class="teach-hero">
+    <div>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.title}</h1>
+      <p class="hero-lead">{copy.lead}</p>
+      <div class="hero-actions">
+        <a class="button button-dark" href={`/${lang}/learn`}>{copy.learn}</a>
+        <a class="text-link" href={`/${lang}/research`}>{copy.research} <span aria-hidden="true">?</span></a>
+      </div>
+    </div>
+    <aside class="teach-hero-note">
+      <p class="panel-kicker">{copy.setup}</p>
+      <p>{copy.noProfiles}</p>
+    </aside>
+  </section>
+
+  <section class="teacher-studio-section" aria-labelledby="teacher-studio-title">
+    <form class="lesson-builder" data-lesson-builder>
+      <div class="lesson-setup-panel">
+        <p class="eyebrow">{copy.setup}</p>
+        <h2 id="teacher-studio-title">{isUrdu ? "??? ????? lesson brief" : "A compact lesson brief"}</h2>
+        <dl class="lesson-facts">
+          <div><dt>{copy.band}</dt><dd>{copy.bandValue}</dd></div>
+          <div><dt>{copy.language}</dt><dd>{copy.languageValue}</dd></div>
+          <div><dt>{copy.duration}</dt><dd>{copy.durationValue}</dd></div>
+          <div><dt>{copy.context}</dt><dd>{copy.contextValue}</dd></div>
+        </dl>
+        <p class="lesson-local-note">{copy.noProfiles}</p>
+      </div>
+
+      <fieldset class="lesson-block-panel">
+        <legend>{copy.choose}</legend>
+        <div class="lesson-block-list">
+          {atlas.beats.map((beat) => (
+            <label class="lesson-block-card">
+              <input type="checkbox" data-lesson-block value={beat.id} />
+              <span class="lesson-block-check" aria-hidden="true"></span>
+              <span class="lesson-block-content">
+                <span class="lesson-block-topline"><bdi>{String(beat.order).padStart(2, "0")}</bdi><span>{copy.anchor}</span></span>
+                <strong>{beat.title[lang]}</strong>
+                <span>{beat.ayah_refs.join(" ? ")}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+        <p class="lesson-selection" aria-live="polite">
+          <strong data-selected-count data-singular={isUrdu ? "????? block" : "block selected"} data-plural={isUrdu ? "????? blocks" : "blocks selected"}>0 {copy.chosen}</strong>
+          <span data-no-selection>{copy.noSelection}</span>
+        </p>
+      </fieldset>
+    </form>
+  </section>
+
+  <section class="lesson-outline-section" id="lesson-outline" aria-labelledby="outline-title">
+    <div class="lesson-outline-copy">
+      <p class="eyebrow">{copy.outline}</p>
+      <h2 id="outline-title">{isUrdu ? "?? ????? beat ?? ??? ??? ??? presentation path?" : "A clear presentation path for every selected beat."}</h2>
+      <p>{copy.outlineBody}</p>
+    </div>
+    <div class="lesson-outline-card">
+      <p class="panel-kicker">{copy.question}</p>
+      <h3>{copy.questionBody}</h3>
+      <div class="outline-rule"></div>
+      <p>{isUrdu ? "????? ???? ?? ??? ??? ???? ???? ?? verification ledger ??? located: yes ?? secondary ???? ???" : "Only add reported claims when the verification ledger makes their located or secondary state explicit."}</p>
+      <a class="text-link" href={`/${lang}/research`}>{copy.research} <span aria-hidden="true">?</span></a>
+    </div>
+  </section>
+</AtlasLayout>
+
+<script>
+  const builder = document.querySelector("[data-lesson-builder]");
+  const boxes = Array.from(document.querySelectorAll("[data-lesson-block]"));
+  const count = document.querySelector("[data-selected-count]");
+  const empty = document.querySelector("[data-no-selection]");
+
+  const refreshSelection = () => {
+    const selected = boxes.filter((box) => box.checked).length;
+    if (count) {
+      const label = selected === 1 ? count.dataset.singular : count.dataset.plural;
+      count.textContent = `${selected} ${label}`;
+    }
+    if (empty) empty.hidden = selected !== 0;
+  };
+
+  builder?.addEventListener("change", refreshSelection);
+  refreshSelection();
+</script>

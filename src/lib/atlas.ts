@@ -6,11 +6,12 @@ import { correctionRows } from "./ledger";
 export type AtlasLocale = "en" | "ur";
 
 export async function loadAtlas(dossierId = "ashab-al-kahf") {
-  const [claimEntries, ledgerEntries, sourceEntries, dossierEntries] = await Promise.all([
+  const [claimEntries, ledgerEntries, sourceEntries, dossierEntries, beatEntries] = await Promise.all([
     getCollection("claims"),
     getCollection("ledgers"),
     getCollection("sources"),
     getCollection("dossiers"),
+    getCollection("beats"),
   ]);
 
   const claims = claimEntries
@@ -23,6 +24,10 @@ export async function loadAtlas(dossierId = "ashab-al-kahf") {
   const dossiers = dossierEntries
     .filter((entry) => belongsToDossier(entry, dossierId))
     .map((entry) => entry.data);
+  const beats = beatEntries
+    .filter((entry) => belongsToDossier(entry, dossierId))
+    .flatMap((entry) => entry.data)
+    .sort((a, b) => a.order - b.order);
   const gateResults = evaluateClaims(claims, ledgerRows);
   const resultByClaim = new Map(gateResults.map((result) => [result.claimId, result]));
 
@@ -31,6 +36,7 @@ export async function loadAtlas(dossierId = "ashab-al-kahf") {
     ledgerRows,
     sources,
     dossiers,
+    beats,
     gateResults,
     resultByClaim,
     publishedClaims: claims.filter((claim) => resultByClaim.get(claim.id)?.publishable),

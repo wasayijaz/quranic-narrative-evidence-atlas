@@ -11,35 +11,35 @@ const isUrdu = lang === "ur";
 const atlas = await loadAtlas("ashab-al-kahf");
 const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf");
 const disclosure = dossier?.disclosure?.[lang] ?? (isUrdu
-  ? "اس مواد کو کسی علمی بورڈ نے نہیں پرکھا۔ اصلاحات عوامی طور پر درج کی جاتی ہیں۔"
+  ? "?? ???? ?? ??? ???? ???? ?? ???? ?????? ??????? ????? ??? ?? ??? ?? ???? ????"
   : "Not reviewed by a scholarly board. Corrections are logged publicly.");
 const copy = isUrdu
   ? {
-      title: "ہر خلا دکھائی دیتا ہے۔",
-      lead: "یہ ریکارڈ شائع شدہ دعووں کے ساتھ ان دعووں کو بھی دکھاتا ہے جو ابھی جانچ کے منتظر ہیں۔",
-      total: "کل دعوے",
-      verified: "واقع",
-      secondary: "ثانوی",
-      unlocated: "غیر واقع",
-      blocked: "روکے گئے",
-      parity: "تکمیلی فرق",
-      ledger: "توثیقی قطار",
-      withheld: "یہ دعویٰ روک دیا گیا ہے",
-      source: "ماخذ",
-      sourceClass: "ماخذ کی قسم",
-      status: "دعویٰ کی حیثیت",
-      verification: "جانچ کی حالت",
-      tradition: "روایتی ماخذ",
-      sunni: "سنی ماخذ",
-      shia: "شیعی ماخذ",
-      missing: "اس دعوے کے لیے درج نہیں",
-      notes: "نوٹس",
-      back: "مطالعے پر واپس جائیں",
-      disclosureLink: "اصلاحی ریکارڈ",
-      explanation: "located: no کا مطلب ہے کہ دعویٰ موجود ہے، مگر ابھی اشاعت کے لیے اہل نہیں۔ تکمیلی فرق وہ دعوے ہیں جن کے لیے سنی اور شیعی دونوں طرف ماخذ درج نہیں۔",
-      withheldBody: "اصل بیان اس وقت تک نہیں دکھایا جائے گا جب تک ماخذ کا صفحہ جانچ نہ لیا جائے۔",
-      publishedBody: "یہ بیان فعال توثیقی قطار مکمل ہونے کی وجہ سے عوامی متن میں شامل ہے۔",
-      unknown: "نامعلوم",
+      title: "?? ??? ?????? ???? ???",
+      lead: "?? ?????? ???? ??? ????? ?? ???? ?? ????? ?? ??? ?????? ?? ?? ???? ???? ?? ????? ????",
+      total: "?? ????",
+      verified: "????",
+      secondary: "?????",
+      unlocated: "??? ????",
+      blocked: "???? ???",
+      parity: "?????? ???",
+      ledger: "?????? ????",
+      withheld: "?? ????? ??? ??? ??? ??",
+      source: "????",
+      sourceClass: "???? ?? ???",
+      status: "????? ?? ?????",
+      verification: "???? ?? ????",
+      tradition: "?????? ????",
+      sunni: "??? ????",
+      shia: "???? ????",
+      missing: "?? ???? ?? ??? ??? ????",
+      notes: "????",
+      back: "?????? ?? ???? ?????",
+      disclosureLink: "?????? ??????",
+      explanation: "located: no ?? ???? ?? ?? ????? ????? ??? ??? ???? ????? ?? ??? ??? ????? ?????? ??? ?? ???? ??? ?? ?? ??? ??? ??? ???? ????? ??? ???? ??? ?????",
+      withheldBody: "??? ???? ?? ??? ?? ???? ?????? ???? ?? ?? ?? ???? ?? ???? ???? ?? ??? ?????",
+      publishedBody: "?? ???? ???? ?????? ???? ???? ???? ?? ??? ?? ????? ??? ??? ???? ???",
+      unknown: "???????",
     }
   : {
       title: "Every gap stays visible.",
@@ -79,13 +79,13 @@ const metricCards = [
 ];
 
 const sourceClassLabels = isUrdu
-  ? { quran: "قرآن", hadith: "حدیث", tafsir: "تفسیر", history: "تاریخ", academic: "علمی" }
+  ? { quran: "????", hadith: "????", tafsir: "?????", history: "?????", academic: "????" }
   : { quran: "Quran", hadith: "Hadith", tafsir: "Tafsir", history: "History", academic: "Academic" };
 const statusLabels = isUrdu
-  ? { attested: "منقول", disputed: "متنازع", "reported-only": "صرف منقول رپورٹ", rejected: "مسترد" }
+  ? { attested: "?????", disputed: "??????", "reported-only": "??? ????? ?????", rejected: "?????" }
   : { attested: "Attested", disputed: "Disputed", "reported-only": "Reported only", rejected: "Rejected" };
 const stateLabels = isUrdu
-  ? { verified: "واقع", secondary: "ثانوی", unlocated: "غیر واقع", blocked: "روکے گئے" }
+  ? { verified: "????", secondary: "?????", unlocated: "??? ????", blocked: "???? ???" }
   : { verified: "Located", secondary: "Secondary", unlocated: "Unlocated", blocked: "Blocked" };
 
 function labelFor(labels: Record<string, string>, value: string | undefined) {
@@ -115,22 +115,22 @@ const ledgerCards = atlas.gateResults.map((result) => {
 
 <AtlasLayout
   lang={lang}
-  title={isUrdu ? "توثیقی ریکارڈ" : "Verification ledger"}
-  description={isUrdu ? "قرآنی بیانیہ ایٹلس کا عوامی توثیقی ریکارڈ۔" : "The public verification ledger for the Quranic Evidence Atlas."}
+  title={isUrdu ? "?????? ??????" : "Verification ledger"}
+  description={isUrdu ? "????? ?????? ????? ?? ????? ?????? ???????" : "The public verification ledger for the Quranic Evidence Atlas."}
   current="verification"
   disclosure={disclosure}
   disclosureLinkLabel={copy.disclosureLink}
 >
   <section class="verification-hero">
     <div>
-      <p class="eyebrow">{isUrdu ? "عوامی ریکارڈ" : "PUBLIC LEDGER"}</p>
+      <p class="eyebrow">{isUrdu ? "????? ??????" : "PUBLIC LEDGER"}</p>
       <h1>{copy.title}</h1>
       <p class="hero-lead">{copy.lead}</p>
     </div>
     <a class="button button-dark" href={`/${lang}/ashab-al-kahf`}>{copy.back}</a>
   </section>
 
-  <section class="metrics-grid" aria-label={isUrdu ? "توثیقی اعداد" : "Verification counts"}>
+  <section class="metrics-grid" aria-label={isUrdu ? "?????? ?????" : "Verification counts"}>
     {metricCards.map((metric) => (
       <article class:list={["metric-card", metric.className]}>
         <span>{metric.label}</span>
@@ -142,7 +142,7 @@ const ledgerCards = atlas.gateResults.map((result) => {
   <section class="ledger-section" aria-labelledby="ledger-title">
     <div class="section-heading compact-heading">
       <p class="eyebrow">{copy.ledger}</p>
-      <h2 id="ledger-title">{isUrdu ? "دعوے کی حالت، ماخذ کے ساتھ" : "Claim state, kept beside the source."}</h2>
+      <h2 id="ledger-title">{isUrdu ? "???? ?? ????? ???? ?? ????" : "Claim state, kept beside the source."}</h2>
       <p>{copy.explanation}</p>
     </div>
 
@@ -176,7 +176,7 @@ const ledgerCards = atlas.gateResults.map((result) => {
             <span>{copy.source}</span>
             {rows.map((row) => (
               <div class="source-record">
-                <p><bdi>{row.source}</bdi> · <bdi>{row.edition}</bdi></p>
+                <p><bdi>{row.source}</bdi> ? <bdi>{row.edition}</bdi></p>
                 <small>{row.notes}</small>
               </div>
             ))}
@@ -184,13 +184,13 @@ const ledgerCards = atlas.gateResults.map((result) => {
               <div class="tradition-lane">
                 <span>{copy.sunni}</span>
                 {lanes.sunni.length > 0 ? lanes.sunni.map((lane) => (
-                  <p><bdi>{lane.label}</bdi> · <bdi>{lane.edition}</bdi>{lane.page ? ` · ${isUrdu ? "صفحہ" : "page"} ${lane.page}` : ""}</p>
+                  <p><bdi>{lane.label}</bdi> ? <bdi>{lane.edition}</bdi>{lane.page ? ` ? ${isUrdu ? "????" : "page"} ${lane.page}` : ""}</p>
                 )) : <p class="lane-empty">{copy.missing}</p>}
               </div>
               <div class="tradition-lane">
                 <span>{copy.shia}</span>
                 {lanes.shia.length > 0 ? lanes.shia.map((lane) => (
-                  <p><bdi>{lane.label}</bdi> · <bdi>{lane.edition}</bdi>{lane.page ? ` · ${isUrdu ? "صفحہ" : "page"} ${lane.page}` : ""}</p>
+                  <p><bdi>{lane.label}</bdi> ? <bdi>{lane.edition}</bdi>{lane.page ? ` ? ${isUrdu ? "????" : "page"} ${lane.page}` : ""}</p>
                 )) : <p class="lane-empty">{copy.missing}</p>}
               </div>
             </div>
@@ -202,19 +202,19 @@ const ledgerCards = atlas.gateResults.map((result) => {
 
   <section class="correction-section" aria-labelledby="correction-title">
     <div class="section-heading compact-heading">
-      <p class="eyebrow">{isUrdu ? "اصلاحی ریکارڈ" : "Correction log"}</p>
-      <h2 id="correction-title">{isUrdu ? "پرانے قطاریں محفوظ رہتی ہیں" : "Old rows stay visible."}</h2>
-      <p>{isUrdu ? "درستگی کسی پرانی قطار کو مٹاتی نہیں؛ نئی قطار اسے بدلتی ہے اور وجہ یہاں رہتی ہے۔" : "A correction never deletes the old row. A new row supersedes it, while the reason remains visible here."}</p>
+      <p class="eyebrow">{isUrdu ? "?????? ??????" : "Correction log"}</p>
+      <h2 id="correction-title">{isUrdu ? "????? ?????? ????? ???? ???" : "Old rows stay visible."}</h2>
+      <p>{isUrdu ? "?????? ??? ????? ???? ?? ????? ????? ??? ???? ??? ????? ?? ??? ??? ???? ???? ???" : "A correction never deletes the old row. A new row supersedes it, while the reason remains visible here."}</p>
     </div>
     <div class="correction-list">
       {atlas.corrections.length === 0 ? (
-        <p class="empty-correction">{isUrdu ? "ابھی کوئی اصلاح درج نہیں۔" : "No corrections recorded yet."}</p>
+        <p class="empty-correction">{isUrdu ? "???? ???? ????? ??? ?????" : "No corrections recorded yet."}</p>
       ) : (
         atlas.corrections.map((row) => (
           <article class="correction-row">
-            <p><bdi>{row.claim}</bdi> · <bdi>{row.source}</bdi></p>
+            <p><bdi>{row.claim}</bdi> ? <bdi>{row.source}</bdi></p>
             <p>{row.notes}</p>
-            <small>{isUrdu ? "نئی قطار:" : "Superseded by:"} <bdi>{row.superseded_by}</bdi></small>
+            <small>{isUrdu ? "??? ????:" : "Superseded by:"} <bdi>{row.superseded_by}</bdi></small>
           </article>
         ))
       )}

@@ -1,6 +1,6 @@
 # Quranic Narrative and Evidence Atlas
 
-This repository contains the M0 vertical slice described in `BUILD_SPEC.md`.
+This repository contains the first public product slice described in `PRODUCT_BUILD_SCOPE.md`, built on the M0 evidence gate in `BUILD_SPEC.md`.
 
 The build is intentionally content-first:
 
@@ -23,7 +23,7 @@ npm run test:scope
 
 The build check is written for a non-programmer: if a reference, ledger row, or source record is missing, it reports the file and the next safe action.
 
-The M0 slice renders bilingual reading and verification routes at `/en/ashab-al-kahf`, `/ur/ashab-al-kahf`, `/en/verification`, and `/ur/verification`. The build also checks the rendered HTML: an unlocated claim remains in the public ledger counts but is withheld from the reading, and the verification page keeps the parity lanes and disclosure visible.
+The product slice renders bilingual Explore, Quran, Learn, Teach, Research, reading, and verification routes. The build checks the rendered HTML: Quran anchors remain distinct from sourced claims, an unlocated claim remains in the public ledger counts but is withheld from every public prose surface, and the verification page keeps the parity lanes and disclosure visible.
 
 ## Editing boundary
 

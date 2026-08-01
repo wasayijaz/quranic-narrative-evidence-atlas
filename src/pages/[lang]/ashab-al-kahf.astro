@@ -11,19 +11,19 @@ const isUrdu = lang === "ur";
 const atlas = await loadAtlas("ashab-al-kahf");
 const tabari = atlas.sources.find((source) => source.id === "tabari-jami-al-bayan");
 const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
-  title: { en: "The Companions of the Cave", ur: "اصحابِ کہف" },
+  title: { en: "The Companions of the Cave", ur: "?????? ???" },
   description: { en: "", ur: "" },
 };
 const title = dossier.title[lang];
 const description = dossier.description[lang];
 const disclosure = dossier.disclosure?.[lang] ?? (isUrdu
-  ? "اس مواد کو کسی علمی بورڈ نے نہیں پرکھا۔ اصلاحات عوامی طور پر درج کی جاتی ہیں۔"
+  ? "?? ???? ?? ??? ???? ???? ?? ???? ?????? ??????? ????? ??? ?? ??? ?? ???? ????"
   : "Not reviewed by a scholarly board. Corrections are logged publicly.");
 const sourceClassLabels = isUrdu
-  ? { quran: "قرآن", hadith: "حدیث", tafsir: "تفسیر", history: "تاریخ", academic: "علمی" }
+  ? { quran: "????", hadith: "????", tafsir: "?????", history: "?????", academic: "????" }
   : { quran: "Quran", hadith: "Hadith", tafsir: "Tafsir", history: "History", academic: "Academic" };
 const statusLabels = isUrdu
-  ? { attested: "منقول", disputed: "متنازع", "reported-only": "صرف منقول رپورٹ", rejected: "مسترد" }
+  ? { attested: "?????", disputed: "??????", "reported-only": "??? ????? ?????", rejected: "?????" }
   : { attested: "Attested", disputed: "Disputed", "reported-only": "Reported only", rejected: "Rejected" };
 const publishedClaims = atlas.publishedClaims.map((claim) => ({
   claim,
@@ -43,19 +43,19 @@ const publishedClaims = atlas.publishedClaims.map((claim) => ({
 const withheldCount = atlas.summary.unlocated + atlas.summary.blocked;
 const copy = isUrdu
   ? {
-      eyebrow: "اصحابِ کہف",
-      intro: "ایک داستان، صفحے کے سامنے کھلی ہوئی۔",
-      lead: "یہ پہلا مطالعہ ایک ہی دعوے سے شروع ہوتا ہے۔ جو ابھی جانچا نہیں گیا، اسے دکھایا نہیں جاتا۔",
-      read: "دعویٰ ابھی منظرِ اشاعت میں نہیں",
-      readBody: "پہلے دعوے کا ماخذی ریکارڈ موجود ہے، مگر تصدیقی قطار میں located: no ہے۔ اس لیے اصل بیان روک دیا گیا ہے۔",
-      evidence: "ماخذی نشان",
-      evidenceBody: "یہاں صرف وہی چیز رہتی ہے جسے قاری خود اصل ایڈیشن میں دیکھ سکے۔",
-      source: "طبری",
-      edition: "بلاق امیریہ ایڈیشن",
-      page: "صفحہ 64",
-      status: "ابھی غیر واقع",
-      verify: "جانچ کا ریکارڈ دیکھیں",
-      sourceNote: "صفحہ 64 کا امیدوار اسکین میں نشان زد ہے؛ مالک کی حتمی جانچ باقی ہے۔",
+      eyebrow: "?????? ???",
+      intro: "??? ??????? ???? ?? ????? ???? ?????",
+      lead: "?? ???? ?????? ??? ?? ???? ?? ???? ???? ??? ?? ???? ????? ???? ???? ??? ?????? ???? ?????",
+      read: "????? ???? ????? ????? ??? ????",
+      readBody: "???? ???? ?? ????? ?????? ????? ??? ??? ?????? ???? ??? located: no ??? ?? ??? ??? ???? ??? ??? ??? ???",
+      evidence: "????? ????",
+      evidenceBody: "???? ??? ??? ??? ???? ?? ??? ???? ??? ??? ?????? ??? ???? ????",
+      source: "????",
+      edition: "???? ?????? ??????",
+      page: "???? 64",
+      status: "???? ??? ????",
+      verify: "???? ?? ?????? ??????",
+      sourceNote: "???? 64 ?? ??????? ????? ??? ???? ?? ??? ???? ?? ???? ???? ???? ???",
     }
   : {
       eyebrow: "ASHAB AL-KAHF",
@@ -80,7 +80,7 @@ const copy = isUrdu
   description={description}
   current="dossier"
   disclosure={disclosure}
-  disclosureLinkLabel={isUrdu ? "اصلاحی ریکارڈ" : "Public correction log"}
+  disclosureLinkLabel={isUrdu ? "?????? ??????" : "Public correction log"}
 >
   <section class="hero-section">
     <div class="hero-copy">
@@ -89,16 +89,16 @@ const copy = isUrdu
       <p class="hero-lead">{copy.lead}</p>
       <div class="hero-actions">
         <a class="button button-dark" href={`/${lang}/verification`}>{copy.verify}</a>
-        <a class="text-link" href="#evidence">{copy.evidence} <span aria-hidden="true">↘</span></a>
+        <a class="text-link" href="#evidence">{copy.evidence} <span aria-hidden="true">?</span></a>
       </div>
     </div>
-    <aside class="hero-orbit" aria-label={isUrdu ? "خلاصہ" : "Reading status"}>
+    <aside class="hero-orbit" aria-label={isUrdu ? "?????" : "Reading status"}>
       <div class="orbit-ring orbit-ring-one"></div>
       <div class="orbit-ring orbit-ring-two"></div>
       <div class="orbit-card">
         <span class="orbit-number">{String(atlas.summary.total).padStart(2, "0")}</span>
-        <span>{isUrdu ? "دعویٰ ریکارڈ میں" : "claim in the ledger"}</span>
-        <strong>{withheldCount} {isUrdu ? "جانچ کے منتظر" : "awaiting verification"}</strong>
+        <span>{isUrdu ? "????? ?????? ???" : "claim in the ledger"}</span>
+        <strong>{withheldCount} {isUrdu ? "???? ?? ?????" : "awaiting verification"}</strong>
       </div>
     </aside>
   </section>
@@ -106,7 +106,7 @@ const copy = isUrdu
   <section id="evidence" class="evidence-section" aria-labelledby="evidence-title">
     <div class="section-heading">
       <p class="eyebrow">{copy.evidence}</p>
-      <h2 id="evidence-title">{isUrdu ? "دعویٰ سے پہلے، ماخذ" : "Before the claim, the source."}</h2>
+      <h2 id="evidence-title">{isUrdu ? "????? ?? ????? ????" : "Before the claim, the source."}</h2>
       <p>{copy.evidenceBody}</p>
     </div>
 
@@ -115,13 +115,13 @@ const copy = isUrdu
         <div class="card-topline"><span>{copy.source}</span><span>{copy.status}</span></div>
         <h3>{tabari?.work_title_en}</h3>
         <p>{tabari?.author}</p>
-        <div class="source-ribbon" aria-label={isUrdu ? "ایڈیشن کی تفصیل" : "Edition details"}>
+        <div class="source-ribbon" aria-label={isUrdu ? "?????? ?? ?????" : "Edition details"}>
           <span>{copy.edition}</span><span>{copy.page}</span><span>archive.org</span>
         </div>
       </article>
       <article class="evidence-card evidence-card-narrow">
-        <p class="card-index">{isUrdu ? "واضح حد" : "A clear boundary"}</p>
-        <h3>{isUrdu ? "غیر جانچا ہوا متن، شائع نہیں ہوتا۔" : "Unchecked text does not become published prose."}</h3>
+        <p class="card-index">{isUrdu ? "???? ??" : "A clear boundary"}</p>
+        <h3>{isUrdu ? "??? ????? ??? ???? ???? ???? ?????" : "Unchecked text does not become published prose."}</h3>
         <p>{copy.sourceNote}</p>
       </article>
     </div>
@@ -130,13 +130,13 @@ const copy = isUrdu
   {publishedClaims.length > 0 && (
     <section class="published-section" aria-labelledby="published-title">
       <div class="section-heading">
-        <p class="eyebrow">{isUrdu ? "جانچا ہوا متن" : "Gate-safe reading"}</p>
+        <p class="eyebrow">{isUrdu ? "????? ??? ???" : "Gate-safe reading"}</p>
         <h2 id="published-title">
-          {isUrdu ? "جو دعوے صفحے تک پہنچ چکے ہیں۔" : "What has made it through the page check."}
+          {isUrdu ? "?? ???? ???? ?? ???? ??? ????" : "What has made it through the page check."}
         </h2>
         <p>
           {isUrdu
-            ? "یہاں صرف وہ دعوے دکھائے جاتے ہیں جن کی ماخذی قطار مکمل ہو چکی ہے۔"
+            ? "???? ??? ?? ???? ?????? ???? ??? ?? ?? ????? ???? ???? ?? ??? ???"
             : "Only claims whose active ledger rows are complete appear in the reading."}
         </p>
       </div>
@@ -148,7 +148,7 @@ const copy = isUrdu
               <span><bdi>{claim.id}</bdi></span>
               <span>{sourceClassLabels[claim.source_class]}</span>
               <span>{statusLabels[claim.status]}</span>
-              <span>{result?.state === "secondary" ? (isUrdu ? "ثانوی" : "secondary") : (isUrdu ? "واقع" : "verified")}</span>
+              <span>{result?.state === "secondary" ? (isUrdu ? "?????" : "secondary") : (isUrdu ? "????" : "verified")}</span>
             </div>
             <h3>{claim.statement[lang]}</h3>
             <div class="published-sources">
@@ -156,8 +156,8 @@ const copy = isUrdu
                 <p>
                   <strong>{source?.work_title_en ?? attribution.source}</strong>
                   <span>{attribution.edition}</span>
-                  {attribution.page && <span>{isUrdu ? `صفحہ ${attribution.page}` : `page ${attribution.page}`}</span>}
-                  {row?.checked_by && <span>{isUrdu ? `جانچا: ${row.checked_by}` : `checked by ${row.checked_by}`}</span>}
+                  {attribution.page && <span>{isUrdu ? `???? ${attribution.page}` : `page ${attribution.page}`}</span>}
+                  {row?.checked_by && <span>{isUrdu ? `?????: ${row.checked_by}` : `checked by ${row.checked_by}`}</span>}
                 </p>
               ))}
             </div>
@@ -170,29 +170,29 @@ const copy = isUrdu
   {withheldCount > 0 && (
     <section class="withheld-section" aria-labelledby="withheld-title">
       <div class="withheld-copy">
-        <p class="eyebrow">{isUrdu ? "پہلا دروازہ" : "The first threshold"}</p>
+        <p class="eyebrow">{isUrdu ? "???? ??????" : "The first threshold"}</p>
         <h2 id="withheld-title">
           {publishedClaims.length > 0
-            ? (isUrdu ? `${withheldCount} دعوے ابھی روک دیے گئے ہیں۔` : `${withheldCount} claims remain withheld.`)
+            ? (isUrdu ? `${withheldCount} ???? ???? ??? ??? ??? ????` : `${withheldCount} claims remain withheld.`)
             : copy.read}
         </h2>
         <p>
           {publishedClaims.length > 0
             ? (isUrdu
-                ? "صرف مکمل ماخذی قطار والے دعوے دکھائے جاتے ہیں؛ باقی جانچ تک باہر رہتے ہیں۔"
+                ? "??? ???? ????? ???? ???? ???? ?????? ???? ???? ???? ???? ?? ???? ???? ????"
                 : "Only claims with complete source rows appear in the reading; the rest stay out until checked.")
             : copy.readBody}
         </p>
       </div>
       <div class="withheld-mark" aria-hidden="true">
-        <span>◌</span>
-        <small>{isUrdu ? "رجسٹر دیکھیں" : "see the ledger"}</small>
+        <span>?</span>
+        <small>{isUrdu ? "????? ??????" : "see the ledger"}</small>
       </div>
     </section>
   )}
 
   <section class="ledger-callout">
-    <p>{isUrdu ? "عوامی جانچ کا ریکارڈ" : "Public verification"}</p>
-    <a class="callout-link" href={`/${lang}/verification`}>{copy.verify} <span aria-hidden="true">↗</span></a>
+    <p>{isUrdu ? "????? ???? ?? ??????" : "Public verification"}</p>
+    <a class="callout-link" href={`/${lang}/verification`}>{copy.verify} <span aria-hidden="true">?</span></a>
   </section>
 </AtlasLayout>

@@ -3,6 +3,12 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const nonEmptyString = z.string().trim().min(1, "must not be empty");
+const localizedCopySchema = z
+  .object({
+    en: nonEmptyString,
+    ur: nonEmptyString,
+  })
+  .strict();
 
 const tradition = z.enum(["sunni", "shia", "academic", "shared"]);
 const sourceClass = z.enum(["quran", "hadith", "tafsir", "history", "academic"]);
@@ -122,6 +128,20 @@ const ledgerRowSchema = z
     }
   });
 
+const beatSchema = z
+  .object({
+    id: nonEmptyString,
+    order: z.number().int().positive(),
+    title: localizedCopySchema,
+    summary: localizedCopySchema,
+    ayah_refs: z.array(nonEmptyString).min(1),
+    quran_link: z.string().url(),
+    evidence_lane: z.enum(["quran", "reported", "unknown"]),
+    status: z.enum(["quran-linked", "candidate", "unknown"]),
+    claim_ids: z.array(nonEmptyString).default([]),
+  })
+  .strict();
+
 const sourceCollection = defineCollection({
   loader: glob({ base: "./content", pattern: "sources/*.yml" }),
   schema: sourceSchema,
@@ -143,9 +163,15 @@ const ledgerCollection = defineCollection({
   schema: z.array(ledgerRowSchema),
 });
 
+const beatCollection = defineCollection({
+  loader: glob({ base: "./content", pattern: "dossiers/*/beats.yml" }),
+  schema: z.array(beatSchema),
+});
+
 export const collections = {
   sources: sourceCollection,
   dossiers: dossierCollection,
   claims: claimCollection,
   ledgers: ledgerCollection,
+  beats: beatCollection,
 };

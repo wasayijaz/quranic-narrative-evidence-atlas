@@ -1,0 +1,243 @@
+---
+import AtlasLayout from "../../layouts/AtlasLayout.astro";
+import { loadAtlas } from "../../lib/atlas";
+
+export function getStaticPaths() {
+  return [{ params: { lang: "en" } }, { params: { lang: "ur" } }];
+}
+
+const lang = Astro.params.lang === "ur" ? "ur" : "en";
+const isUrdu = lang === "ur";
+const atlas = await loadAtlas("ashab-al-kahf");
+const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
+  title: { en: "The Companions of the Cave", ur: "?????? ???" },
+  description: { en: "", ur: "" },
+};
+const disclosure = dossier.disclosure?.[lang] ?? (isUrdu
+  ? "?? ???? ?? ??? ???? ???? ?? ???? ?????? ??????? ????? ??? ?? ??? ?? ???? ????"
+  : "Not reviewed by a scholarly board. Corrections are logged publicly.");
+const sourceClassLabels = isUrdu
+  ? { quran: "????", hadith: "????", tafsir: "?????", history: "?????", academic: "????" }
+  : { quran: "Quran", hadith: "Hadith", tafsir: "Tafsir", history: "History", academic: "Academic" };
+const statusLabels = isUrdu
+  ? { attested: "?????", disputed: "??????", "reported-only": "??? ????? ?????", rejected: "?????" }
+  : { attested: "Attested", disputed: "Disputed", "reported-only": "Reported only", rejected: "Rejected" };
+const stateLabels = isUrdu
+  ? { verified: "????", secondary: "?????", unlocated: "??? ????", blocked: "???? ???" }
+  : { verified: "Located", secondary: "Secondary", unlocated: "Unlocated", blocked: "Blocked" };
+const copy = isUrdu
+  ? {
+      eyebrow: "????? ? ????? ???",
+      title: "?????? ???? ??? ??? ??? ?? ??? ???",
+      lead: "???? ??????? ??? ?? ????? ????? ?????? ???? ??: claim status? source class? ????? ?? lanes? ??? ?? ????? ?? ???? ????? ???? ????",
+      learn: "?????? ?????",
+      verification: "?????? ??????",
+      question: "?????? ????",
+      questionBody: "?????? ??? ?? ?????? ??? ???? ??? anchor ???? ??? ??? ??? ?? ????? ???? ???? ??? ?? ???? ?????? ????",
+      filter: "????? ?? ???? ???? ????",
+      claimDesk: "????? ?????",
+      sourceRegistry: "???? ??????",
+      sourceClass: "???? ?? ???",
+      status: "????? ?? ????",
+      verificationState: "???? ?? ????",
+      source: "????",
+      tradition: "?????? lanes",
+      sunni: "??? ????",
+      shia: "???? ????",
+      missing: "??? ????",
+      withheld: "??? ???? ??? ??? ??? ??",
+      withheldBody: "???? ?? ?????? ???? ???? ???? ?? candidate claim ????? ??? ??? ???? ???? ?????",
+      locatedBody: "???? ledger row ???? ???? ?? ??? ?? ?? ???? ???? ???? ?? ???? ???",
+      openVerification: "?? claim ?? ?????? ??????",
+      sourceNote: "?????? ?? ????? ??? scan locator ?????? ??? ????? ??? scan-holder ?? ????? ??? ???? ????",
+      openSource: "source locator ??????",
+      count: "?? ??????",
+    }
+  : {
+      eyebrow: "RESEARCH ? EVIDENCE DESK",
+      title: "Claim, source, and gap on one desk.",
+      lead: "This is the record behind the story prose: claim status, source class, tradition lanes, and the pages that still need a human check.",
+      learn: "Story Canvas",
+      verification: "Verification ledger",
+      question: "Research question",
+      questionBody: "What does the Quran anchor in the Ashab al-Kahf narrative, and where do later reported claims need a separate source check?",
+      filter: "Filter by claim or source",
+      claimDesk: "Claim register",
+      sourceRegistry: "Source registry",
+      sourceClass: "Source class",
+      status: "Claim status",
+      verificationState: "Verification state",
+      source: "Source",
+      tradition: "Tradition lanes",
+      sunni: "Sunni source",
+      shia: "Shia source",
+      missing: "Not recorded",
+      withheld: "The statement is withheld",
+      withheldBody: "A candidate claim does not become public prose until a human checks the cited page.",
+      locatedBody: "The active ledger row is complete, so this statement is eligible for publication.",
+      openVerification: "Open this claim in the verification ledger",
+      sourceNote: "Edition identity and scan locator are recorded; scan-holder terms remain separate.",
+      openSource: "Open source locator",
+      count: "records in the desk",
+    };
+
+const claimCards = atlas.gateResults.map((result) => {
+  const claim = atlas.claims.find((candidate) => candidate.id === result.claimId);
+  const rows = atlas.ledgerRows.filter((row) => row.claim === result.claimId && !row.superseded_by);
+  const attributions = claim?.attributions ?? [];
+  const lanes = {
+    sunni: attributions.filter((attribution) => attribution.tradition === "sunni"),
+    shia: attributions.filter((attribution) => attribution.tradition === "shia"),
+  };
+  const searchable = [
+    claim?.id,
+    claim?.source_class,
+    claim?.status,
+    ...attributions.map((attribution) => attribution.source),
+    ...rows.map((row) => row.notes),
+  ].filter(Boolean).join(" ").toLowerCase();
+  return { result, claim, rows, attributions, lanes, searchable };
+});
+
+const sourceRecords = atlas.sources.map((source) => ({
+  source,
+  locatorHref: source.access.locator.startsWith("http") ? source.access.locator : `https://${source.access.locator}`,
+}));
+
+function laneText(attributions: typeof claimCards[number]["attributions"], emptyLabel: string) {
+  return attributions.length > 0
+    ? attributions.map((attribution) => `${attribution.source} ? ${attribution.edition}${attribution.page ? ` ? p. ${attribution.page}` : ""}`).join("; ")
+    : emptyLabel;
+}
+---
+
+<AtlasLayout
+  lang={lang}
+  title={isUrdu ? "????? ??? ? ?????? ???" : "Evidence Desk ? Ashab al-Kahf"}
+  description={isUrdu ? "?????? ??? ?? ????? ??? ?????? ?? ????? ?????? ???????" : "The public research record for Ashab al-Kahf claims and sources."}
+  current="research"
+  disclosure={disclosure}
+  disclosureLinkLabel={isUrdu ? "?????? ??????" : "Public correction log"}
+>
+  <section class="research-hero">
+    <div>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.title}</h1>
+      <p class="hero-lead">{copy.lead}</p>
+      <div class="hero-actions">
+        <a class="button button-dark" href={`/${lang}/learn`}>{copy.learn}</a>
+        <a class="text-link" href={`/${lang}/verification`}>{copy.verification} <span aria-hidden="true">?</span></a>
+      </div>
+    </div>
+    <aside class="research-hero-index" aria-label={isUrdu ? "????? ?????" : "Register summary"}>
+      <strong>{String(claimCards.length).padStart(2, "0")}</strong>
+      <span>{copy.count}</span>
+      <span>{isUrdu ? "?? claim ?? ??? ????" : "Each claim keeps its own state"}</span>
+    </aside>
+  </section>
+
+  <section class="research-question-section" aria-labelledby="research-question-title">
+    <div class="research-question-copy">
+      <p class="eyebrow">{copy.question}</p>
+      <h2 id="research-question-title">{copy.questionBody}</h2>
+    </div>
+    <div class="research-question-metrics">
+      <span>{isUrdu ? "??? ????" : "Unlocated"}</span>
+      <strong>{atlas.summary.unlocated}</strong>
+      <p>{isUrdu ? "????? ???? source-page check ?? ????? ???" : "claims still waiting for a source-page check."}</p>
+    </div>
+  </section>
+
+  <section class="research-desk-section" aria-labelledby="claim-desk-title">
+    <div class="research-desk-toolbar">
+      <div>
+        <p class="eyebrow">{copy.claimDesk}</p>
+        <h2 id="claim-desk-title">{isUrdu ? "????? ??? ??????? ???? ???? ??? ??????" : "The working record behind the reading"}</h2>
+      </div>
+      <label class="research-filter">
+        <span>{copy.filter}</span>
+        <input type="search" data-research-filter placeholder={copy.filter} />
+      </label>
+    </div>
+
+    <div class="research-claim-list">
+      {claimCards.map(({ result, claim, rows, attributions, lanes, searchable }) => (
+        <article class:list={["research-claim-card", result.publishable ? "claim-published" : "claim-withheld"]} id={claim?.id} data-research-card data-search={searchable}>
+          <div class="research-claim-topline">
+            <span class="claim-id"><bdi>{claim?.id}</bdi></span>
+            <span>{claim ? sourceClassLabels[claim.source_class] : ""}</span>
+            <span>{claim ? statusLabels[claim.status] : ""}</span>
+            <span class="verification-state" data-state={result.state}>{stateLabels[result.state]}</span>
+          </div>
+          <div class="research-claim-body">
+            <div class="research-claim-main">
+              <h3>{result.publishable && claim ? claim.statement[lang] : copy.withheld}</h3>
+              <p>{result.publishable ? copy.locatedBody : copy.withheldBody}</p>
+              <a class="text-link" href={`/${lang}/verification#${claim?.id}`}>{copy.openVerification} <span aria-hidden="true">?</span></a>
+            </div>
+            <aside class="research-claim-inspector" aria-label={isUrdu ? "????? ?? ????? ?????" : "Claim evidence inspector"}>
+              <div class="inspector-fact">
+                <span>{copy.source}</span>
+                {attributions.map((attribution) => (
+                  <strong><bdi>{attribution.source}</bdi></strong>
+                ))}
+              </div>
+              <div class="inspector-fact">
+                <span>{copy.tradition}</span>
+                <p><b>{copy.sunni}</b> {laneText(lanes.sunni, copy.missing)}</p>
+                <p><b>{copy.shia}</b> {laneText(lanes.shia, copy.missing)}</p>
+              </div>
+              <div class="inspector-fact">
+                <span>{isUrdu ? "???? ledger row" : "Active ledger row"}</span>
+                {rows.map((row) => <p><bdi>{row.located}</bdi> ? {row.notes}</p>)}
+              </div>
+            </aside>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="research-empty" data-research-empty hidden>{isUrdu ? "?? ???? ?? ??? ???? claim ???? ????" : "No claims match this filter."}</p>
+  </section>
+
+  <section class="source-registry-section" aria-labelledby="source-registry-title">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.sourceRegistry}</p>
+      <h2 id="source-registry-title">{isUrdu ? "?????? ?? ????? ??? ?????? ?? ??? ???" : "Source identity is part of the record."}</h2>
+      <p>{copy.sourceNote}</p>
+    </div>
+    <div class="source-registry-grid">
+      {sourceRecords.map(({ source, locatorHref }) => (
+        <article class="source-registry-card">
+          <div class="card-topline"><span>{sourceClassLabels[source.source_class]}</span><span>{source.tradition}</span></div>
+          <h3>{source.work_title_en}</h3>
+          <p>{source.author}</p>
+          <dl class="source-facts">
+            <div><dt>{isUrdu ? "??????" : "Edition"}</dt><dd><bdi>{source.edition.id}</bdi></dd></div>
+            <div><dt>{isUrdu ? "?????" : "Access"}</dt><dd>{source.access.kind}</dd></div>
+            <div><dt>{isUrdu ? "????" : "Rights"}</dt><dd>{source.rights.status}</dd></div>
+          </dl>
+          <a class="text-link" href={locatorHref} rel="noreferrer" target="_blank">{copy.openSource} <span aria-hidden="true">?</span></a>
+        </article>
+      ))}
+    </div>
+  </section>
+</AtlasLayout>
+
+<script>
+  const input = document.querySelector("[data-research-filter]");
+  const cards = Array.from(document.querySelectorAll("[data-research-card]"));
+  const empty = document.querySelector("[data-research-empty]");
+
+  input?.addEventListener("input", (event) => {
+    const needle = event.currentTarget.value.trim().toLowerCase();
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const matches = !needle || card.dataset.search?.includes(needle);
+      card.hidden = !matches;
+      if (matches) visible += 1;
+    });
+
+    if (empty) empty.hidden = visible !== 0;
+  });
+</script>
