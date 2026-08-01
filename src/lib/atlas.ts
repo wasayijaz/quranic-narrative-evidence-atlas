@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { evaluateClaims, verificationSummary, type ClaimGateResult } from "./gate";
+import { evaluateClaims, parityGapDetails, verificationSummary, type ClaimGateResult } from "./gate";
 import { belongsToDossier } from "./content-scope";
 import { correctionRows } from "./ledger";
 
@@ -35,7 +35,8 @@ export async function loadAtlas(dossierId = "ashab-al-kahf") {
     resultByClaim,
     publishedClaims: claims.filter((claim) => resultByClaim.get(claim.id)?.publishable),
     corrections: correctionRows(ledgerRows),
-    summary: verificationSummary(gateResults),
+    parityGaps: parityGapDetails(claims),
+    summary: verificationSummary(gateResults, claims),
   };
 }
 

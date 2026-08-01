@@ -16,11 +16,14 @@ The build is intentionally content-first:
 npm install
 npm run build
 npm run test:gate
+npm run test:ledger
+npm run test:integrity
+npm run test:scope
 ```
 
 The build check is written for a non-programmer: if a reference, ledger row, or source record is missing, it reports the file and the next safe action.
 
-The M0 slice renders bilingual reading and verification routes at `/en/ashab-al-kahf`, `/ur/ashab-al-kahf`, `/en/verification`, and `/ur/verification`. An unlocated claim remains in the public ledger counts but is withheld from the reading.
+The M0 slice renders bilingual reading and verification routes at `/en/ashab-al-kahf`, `/ur/ashab-al-kahf`, `/en/verification`, and `/ur/verification`. The build also checks the rendered HTML: an unlocated claim remains in the public ledger counts but is withheld from the reading, and the verification page keeps the parity lanes and disclosure visible.
 
 ## Editing boundary
 

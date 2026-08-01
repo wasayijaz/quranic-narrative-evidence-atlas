@@ -1,4 +1,5 @@
 export type VerificationState = "yes" | "no" | "secondary";
+export type Tradition = "sunni" | "shia" | "academic" | "shared";
 
 export type ClaimAttribution = {
   source: string;
@@ -6,11 +7,13 @@ export type ClaimAttribution = {
   page?: number;
   volume?: number;
   part?: number;
-  tradition?: string;
+  tradition?: Tradition;
 };
 
 export type ClaimForGate = {
   id: string;
+  source_class?: string;
+  status?: string;
   attributions: ClaimAttribution[];
 };
 
@@ -34,6 +37,11 @@ export type ClaimGateResult = {
   state: "verified" | "secondary" | "unlocated" | "blocked";
   publishable: boolean;
   issues: GateIssue[];
+};
+
+export type ParityGap = {
+  claimId: string;
+  missing: Array<"sunni" | "shia">;
 };
 
 type AttributionKey = `${string}::${string}`;
@@ -120,8 +128,16 @@ export function evaluateClaims(
   return claims.map((claim) => evaluateClaimGate(claim, ledgerRows));
 }
 
-export function verificationSummary(results: ClaimGateResult[]) {
-  return results.reduce(
+export function parityGapDetails(claims: ClaimForGate[]): ParityGap[] {
+  return claims.flatMap((claim) => {
+    const traditions = new Set((claim.attributions ?? []).map((attribution) => attribution.tradition));
+    const missing = (["sunni", "shia"] as const).filter((tradition) => !traditions.has(tradition));
+    return missing.length > 0 ? [{ claimId: claim.id, missing }] : [];
+  });
+}
+
+export function verificationSummary(results: ClaimGateResult[], claims: ClaimForGate[] = []) {
+  const summary = results.reduce(
     (summary, result) => {
       summary.total += 1;
       summary[result.state] += 1;
@@ -135,4 +151,9 @@ export function verificationSummary(results: ClaimGateResult[]) {
       blocked: 0,
     },
   );
+
+  return {
+    ...summary,
+    parityGaps: parityGapDetails(claims).length,
+  };
 }

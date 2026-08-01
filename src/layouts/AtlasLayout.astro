@@ -6,9 +6,11 @@ interface Props {
   title: string;
   description: string;
   current: "dossier" | "verification";
+  disclosure: string;
+  disclosureLinkLabel: string;
 }
 
-const { lang, title, description, current } = Astro.props;
+const { lang, title, description, current, disclosure, disclosureLinkLabel } = Astro.props;
 const isUrdu = lang === "ur";
 const otherLang = isUrdu ? "en" : "ur";
 const dossierHref = `/${lang}/ashab-al-kahf`;
@@ -42,6 +44,10 @@ const languageHref = `/${otherLang}/${current === "dossier" ? "ashab-al-kahf" : 
       </header>
 
       <main>
+        <aside class="resource-disclosure" aria-label={isUrdu ? "ماخذی وضاحت" : "Resource disclosure"}>
+          <p>{disclosure}</p>
+          <a href={verificationHref}>{disclosureLinkLabel}</a>
+        </aside>
         <slot />
       </main>
 

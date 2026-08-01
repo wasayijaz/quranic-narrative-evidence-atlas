@@ -16,6 +16,15 @@ const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? 
 };
 const title = dossier.title[lang];
 const description = dossier.description[lang];
+const disclosure = dossier.disclosure?.[lang] ?? (isUrdu
+  ? "اس مواد کو کسی علمی بورڈ نے نہیں پرکھا۔ اصلاحات عوامی طور پر درج کی جاتی ہیں۔"
+  : "Not reviewed by a scholarly board. Corrections are logged publicly.");
+const sourceClassLabels = isUrdu
+  ? { quran: "قرآن", hadith: "حدیث", tafsir: "تفسیر", history: "تاریخ", academic: "علمی" }
+  : { quran: "Quran", hadith: "Hadith", tafsir: "Tafsir", history: "History", academic: "Academic" };
+const statusLabels = isUrdu
+  ? { attested: "منقول", disputed: "متنازع", "reported-only": "صرف منقول رپورٹ", rejected: "مسترد" }
+  : { attested: "Attested", disputed: "Disputed", "reported-only": "Reported only", rejected: "Rejected" };
 const publishedClaims = atlas.publishedClaims.map((claim) => ({
   claim,
   result: atlas.resultByClaim.get(claim.id),
@@ -26,7 +35,8 @@ const publishedClaims = atlas.publishedClaims.map((claim) => ({
       (candidate) =>
         candidate.claim === claim.id &&
         candidate.source === attribution.source &&
-        candidate.edition === attribution.edition,
+        candidate.edition === attribution.edition &&
+        !candidate.superseded_by,
     ),
   })),
 }));
@@ -64,7 +74,14 @@ const copy = isUrdu
     };
 ---
 
-<AtlasLayout lang={lang} title={title} description={description} current="dossier">
+<AtlasLayout
+  lang={lang}
+  title={title}
+  description={description}
+  current="dossier"
+  disclosure={disclosure}
+  disclosureLinkLabel={isUrdu ? "اصلاحی ریکارڈ" : "Public correction log"}
+>
   <section class="hero-section">
     <div class="hero-copy">
       <p class="eyebrow">{copy.eyebrow}</p>
@@ -81,7 +98,7 @@ const copy = isUrdu
       <div class="orbit-card">
         <span class="orbit-number">{String(atlas.summary.total).padStart(2, "0")}</span>
         <span>{isUrdu ? "دعویٰ ریکارڈ میں" : "claim in the ledger"}</span>
-        <strong>{atlas.summary.unlocated} {isUrdu ? "جانچ کے منتظر" : "awaiting verification"}</strong>
+        <strong>{withheldCount} {isUrdu ? "جانچ کے منتظر" : "awaiting verification"}</strong>
       </div>
     </aside>
   </section>
@@ -129,6 +146,8 @@ const copy = isUrdu
           <article class="published-card">
             <div class="card-topline">
               <span><bdi>{claim.id}</bdi></span>
+              <span>{sourceClassLabels[claim.source_class]}</span>
+              <span>{statusLabels[claim.status]}</span>
               <span>{result?.state === "secondary" ? (isUrdu ? "ثانوی" : "secondary") : (isUrdu ? "واقع" : "verified")}</span>
             </div>
             <h3>{claim.statement[lang]}</h3>
