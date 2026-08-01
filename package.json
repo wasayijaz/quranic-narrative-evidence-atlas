@@ -10,6 +10,7 @@
     "prebuild": "node --experimental-strip-types scripts/check.mjs",
     "build": "astro build",
     "test:gate": "node --experimental-strip-types scripts/test-gate.mjs",
+    "test:ledger": "node --experimental-strip-types scripts/test-ledger.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
