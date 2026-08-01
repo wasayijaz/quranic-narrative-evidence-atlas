@@ -1,0 +1,15 @@
+id: ak-002
+statement:
+  en: "Al-Tabari treats ‘take refuge in the cave’ as the response to the preceding ‘when’ clause in Qur’an 18:16."
+  ur: "طبری کے نزدیک «فَأْوُوا إِلَى الْكَهْفِ» قرآن 18:16 میں آنے والے «إذ» کے جواب کے طور پر ہے۔"
+status: reported-only
+source_class: tafsir
+independence_group: g-kahf-18-16
+attributions:
+  - source: tabari-jami-al-bayan
+    edition: bulaq-amiriyya
+    page: 64
+    tradition: sunni
+evaluation: []
+supersedes: null
+superseded_by: null
