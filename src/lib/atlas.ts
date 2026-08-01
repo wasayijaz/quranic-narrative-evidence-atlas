@@ -1,10 +1,11 @@
 import { getCollection } from "astro:content";
 import { evaluateClaims, verificationSummary, type ClaimGateResult } from "./gate";
+import { belongsToDossier } from "./content-scope";
 import { correctionRows } from "./ledger";
 
 export type AtlasLocale = "en" | "ur";
 
-export async function loadAtlas() {
+export async function loadAtlas(dossierId = "ashab-al-kahf") {
   const [claimEntries, ledgerEntries, sourceEntries, dossierEntries] = await Promise.all([
     getCollection("claims"),
     getCollection("ledgers"),
@@ -12,10 +13,16 @@ export async function loadAtlas() {
     getCollection("dossiers"),
   ]);
 
-  const claims = claimEntries.map((entry) => entry.data);
-  const ledgerRows = ledgerEntries.flatMap((entry) => entry.data);
+  const claims = claimEntries
+    .filter((entry) => belongsToDossier(entry, dossierId))
+    .map((entry) => entry.data);
+  const ledgerRows = ledgerEntries
+    .filter((entry) => belongsToDossier(entry, dossierId))
+    .flatMap((entry) => entry.data);
   const sources = sourceEntries.map((entry) => entry.data);
-  const dossiers = dossierEntries.map((entry) => entry.data);
+  const dossiers = dossierEntries
+    .filter((entry) => belongsToDossier(entry, dossierId))
+    .map((entry) => entry.data);
   const gateResults = evaluateClaims(claims, ledgerRows);
   const resultByClaim = new Map(gateResults.map((result) => [result.claimId, result]));
 
