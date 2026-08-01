@@ -1,0 +1,24 @@
+id: tabarsi-majma-al-bayan
+work_title_ar: null
+work_title_en: "Majma' al-Bayan li-'Ulum al-Qur'an"
+author: "al-Tabarsi"
+author_died_hijri: null
+author_died_ce: null
+tradition: shia
+source_class: tafsir
+edition:
+  id: ministry-of-culture-9pt
+  publisher: "Ministry of Culture (India)"
+  place: null
+  language: ar
+  volumes: null
+rights:
+  status: public-domain
+  basis: "Classical work described as out of copyright in the project resource catalog."
+  redistributable: false
+access:
+  kind: page-images
+  locator: "archive.org/details/dli.ministry.26324"
+  scanned_by: "National Library of India, Kolkata"
+  collection: "Public Library of India"
+  notes: "Arabic edition in 9 parts. PDF and single-page-processed JP2 ZIP available; scan-holder terms remain separate from the underlying work's status."
