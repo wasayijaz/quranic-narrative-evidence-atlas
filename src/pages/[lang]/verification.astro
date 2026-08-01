@@ -8,7 +8,7 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang === "ur" ? "ur" : "en";
 const isUrdu = lang === "ur";
-const atlas = await loadAtlas();
+const atlas = await loadAtlas("ashab-al-kahf");
 const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
   title: { en: "The Companions of the Cave", ur: "اصحابِ کہف" },
   description: { en: "", ur: "" },
