@@ -1,0 +1,60 @@
+---
+import "../styles/atlas.css";
+
+interface Props {
+  lang: "en" | "ur";
+  title: string;
+  description: string;
+  current: "dossier" | "verification";
+}
+
+const { lang, title, description, current } = Astro.props;
+const isUrdu = lang === "ur";
+const otherLang = isUrdu ? "en" : "ur";
+const dossierHref = `/${lang}/ashab-al-kahf`;
+const verificationHref = `/${lang}/verification`;
+const languageHref = `/${otherLang}/${current === "dossier" ? "ashab-al-kahf" : "verification"}`;
+---
+
+<!doctype html>
+<html lang={lang} dir={isUrdu ? "rtl" : "ltr"}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} · Quranic Evidence Atlas</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-nav" aria-label={isUrdu ? "بنیادی نیویگیشن" : "Primary navigation"}>
+        <a class="brand" href={dossierHref} aria-label={isUrdu ? "اصحاب کہف کا مطالعہ" : "Ashab al-Kahf reading"}>
+          <span class="brand-mark" aria-hidden="true">◒</span>
+          <span>Quranic<br /><em>Evidence Atlas</em></span>
+        </a>
+        <nav class="nav-links" aria-label={isUrdu ? "صفحات" : "Pages"}>
+          <a class:list={{ active: current === "dossier" }} href={dossierHref}>{isUrdu ? "مطالعہ" : "Reading"}</a>
+          <a class:list={{ active: current === "verification" }} href={verificationHref}>{isUrdu ? "جانچ" : "Verification"}</a>
+          <a class="language-link" href={languageHref} lang={otherLang} dir={otherLang === "ur" ? "rtl" : "ltr"}>
+            {isUrdu ? "English" : "اردو"}
+          </a>
+        </nav>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div>
+          <p class="footer-title">Quranic Evidence Atlas</p>
+          <p class="footer-note">{isUrdu ? "ہر دعویٰ، اپنے ماخذ کے ساتھ۔" : "Every claim, held close to its source."}</p>
+        </div>
+        <div class="footer-links">
+          <a href={dossierHref}>{isUrdu ? "اصحابِ کہف" : "Ashab al-Kahf"}</a>
+          <a href={verificationHref}>{isUrdu ? "عوامی جانچ کا ریکارڈ" : "Public verification ledger"}</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
