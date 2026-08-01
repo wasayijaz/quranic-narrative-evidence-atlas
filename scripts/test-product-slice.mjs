@@ -28,6 +28,7 @@ const englishLearn = routes["en/learn"];
 const englishQuran = routes["en/quran"];
 const englishTeach = routes["en/teach"];
 const englishResearch = routes["en/research"];
+const englishVerification = await readRoute("en", "verification");
 const urduLearn = routes["ur/learn"];
 const urduResearch = routes["ur/research"];
 
@@ -50,12 +51,18 @@ for (const reference of ["18:9", "18:10?12", "18:16", "18:17?18", "18:19?21", "1
 
 assertIncludes(englishTeach, "data-lesson-block", "Teacher Studio has no selectable lesson blocks.");
 assert.equal((englishTeach.match(/type="checkbox" data-lesson-block/g) ?? []).length, 6, "Teacher Studio should expose all six Quran-anchored blocks.");
+assertIncludes(englishTeach, "data-lesson-outline", "Teacher Studio is missing its live selected-beat outline.");
+assertIncludes(englishTeach, "data-block-title", "Teacher Studio blocks are missing their outline data.");
 assertIncludes(englishTeach, "local outline", "Teacher Studio must explain that the workspace is local.");
 assertIncludes(englishResearch, "Evidence Desk", "Research hero is missing.");
 assertIncludes(englishResearch, "Source registry", "Research page is missing the source registry.");
 assertIncludes(englishResearch, "Shia source", "Research page is missing the labelled Shia lane.");
 assertIncludes(englishResearch, "Unlocated", "Research page is missing the active ledger state.");
 assertIncludes(englishResearch, "data-research-filter", "Research page is missing the claim filter.");
+assertIncludes(englishResearch, "/en/learn#ak-beat-03", "Research page is missing the story-beat deep link.");
+assertIncludes(englishVerification, "id=" + '"ak-001"', "Verification page is missing claim deep-link anchors.");
+assertIncludes(englishLearn, "/en/quran#ak-beat-01", "Story Canvas is missing the internal Quran-anchor link.");
+assertIncludes(englishQuran, "id=" + '"ak-beat-01"', "Quran page is missing anchor ids.");
 assertIncludes(urduLearn, "????? ?????", "Urdu Story Canvas is missing native Quran anchor copy.");
 assertIncludes(urduResearch, "????? ???", "Urdu Research page is missing native evidence-desk copy.");
 

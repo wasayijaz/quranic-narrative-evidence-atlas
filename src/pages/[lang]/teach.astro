@@ -39,6 +39,8 @@ const copy = isUrdu
       anchor: "????? anchor",
       outline: "projector outline",
       outlineBody: "?? ????? beat ?? ??? ??? ?? ?????? ??? ????? ??? ????? ?????? ?? ???? ??? ?????",
+      selectedOutline: "????? beats",
+      selectedOutlineEmpty: "????? beats ???? ?????? ??? ???",
       question: "???? ?? ??? ????",
       questionBody: "??? ??? ??? ???? ??? ??? ??? ?? ??? ?? ??? ???? ??? ???? ?????? ??? ???",
       noProfiles: "?? tool ????? outline ????? ??? learner data? comments? ?? account ???? ??????",
@@ -65,6 +67,8 @@ const copy = isUrdu
       anchor: "Quran anchor",
       outline: "Projector outline",
       outlineBody: "Present each selected beat with its passage reference, one question, and one evidence boundary.",
+      selectedOutline: "Selected beats",
+      selectedOutlineEmpty: "Your selected beats will appear here.",
       question: "Classroom question",
       questionBody: "What is explicit in the passage, and what would need a separate source check?",
       noProfiles: "This tool makes a local outline; it creates no learner data, comments, or account.",
@@ -114,7 +118,7 @@ const copy = isUrdu
         <div class="lesson-block-list">
           {atlas.beats.map((beat) => (
             <label class="lesson-block-card">
-              <input type="checkbox" data-lesson-block value={beat.id} />
+              <input type="checkbox" data-lesson-block data-block-title={beat.title[lang]} data-block-refs={beat.ayah_refs.join(" ? ")} value={beat.id} />
               <span class="lesson-block-check" aria-hidden="true"></span>
               <span class="lesson-block-content">
                 <span class="lesson-block-topline"><bdi>{String(beat.order).padStart(2, "0")}</bdi><span>{copy.anchor}</span></span>
@@ -139,6 +143,11 @@ const copy = isUrdu
       <p>{copy.outlineBody}</p>
     </div>
     <div class="lesson-outline-card">
+      <div class="lesson-outline-selected" aria-live="polite">
+        <p class="panel-kicker">{copy.selectedOutline}</p>
+        <ol data-lesson-outline></ol>
+        <p data-outline-empty>{copy.selectedOutlineEmpty}</p>
+      </div>
       <p class="panel-kicker">{copy.question}</p>
       <h3>{copy.questionBody}</h3>
       <div class="outline-rule"></div>
@@ -153,14 +162,31 @@ const copy = isUrdu
   const boxes = Array.from(document.querySelectorAll("[data-lesson-block]"));
   const count = document.querySelector("[data-selected-count]");
   const empty = document.querySelector("[data-no-selection]");
+  const outline = document.querySelector("[data-lesson-outline]");
+  const outlineEmpty = document.querySelector("[data-outline-empty]");
 
   const refreshSelection = () => {
-    const selected = boxes.filter((box) => box.checked).length;
+    const selected = boxes.filter((box) => box.checked);
     if (count) {
-      const label = selected === 1 ? count.dataset.singular : count.dataset.plural;
-      count.textContent = `${selected} ${label}`;
+      const label = selected.length === 1 ? count.dataset.singular : count.dataset.plural;
+      count.textContent = `${selected.length} ${label}`;
     }
-    if (empty) empty.hidden = selected !== 0;
+    if (empty) empty.hidden = selected.length !== 0;
+    if (outline) {
+      outline.replaceChildren();
+      selected.forEach((box, index) => {
+        const item = document.createElement("li");
+        const number = document.createElement("span");
+        const title = document.createElement("strong");
+        const refs = document.createElement("span");
+        number.textContent = String(index + 1).padStart(2, "0");
+        title.textContent = box.dataset.blockTitle ?? box.value;
+        refs.textContent = box.dataset.blockRefs ?? "";
+        item.append(number, title, refs);
+        outline.append(item);
+      });
+    }
+    if (outlineEmpty) outlineEmpty.hidden = selected.length !== 0;
   };
 
   builder?.addEventListener("change", refreshSelection);

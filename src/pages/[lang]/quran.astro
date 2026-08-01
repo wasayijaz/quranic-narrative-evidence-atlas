@@ -26,6 +26,7 @@ const copy = isUrdu
       noteBody: "???? ??? ??? ??? ???? ?? passage ?? ?????? reader ??? ?????? ??? ?? atlas ??? ??? ???? ????? ???? ???? ??? ????",
       open: "???? ?? ????? ??????",
       research: "????? ??? ??????",
+      story: "?????? ????? ??? ??????",
     }
   : {
       eyebrow: "QURAN ? PASSAGE ANCHORS",
@@ -36,6 +37,7 @@ const copy = isUrdu
       noteBody: "Each link opens the passage in an external reader; no unlicensed translation is embedded in this atlas.",
       open: "Open Quran reference",
       research: "View the evidence desk",
+      story: "View in Story Canvas",
     };
 ---
 
@@ -70,13 +72,16 @@ const copy = isUrdu
     </div>
     <div class="quran-anchor-list">
       {atlas.beats.map((beat) => (
-        <article class="quran-anchor-row">
+        <article class="quran-anchor-row" id={beat.id}>
           <span class="story-preview-order">{String(beat.order).padStart(2, "0")}</span>
           <div>
             <h3>{beat.title[lang]}</h3>
             <p>{beat.summary[lang]}</p>
           </div>
-          <a class="button button-outline" href={beat.quran_link} rel="noreferrer" target="_blank">{beat.ayah_refs.join(" ? ")} <span aria-hidden="true">?</span></a>
+          <div class="quran-anchor-actions">
+            <a class="button button-outline" href={beat.quran_link} rel="noreferrer" target="_blank">{beat.ayah_refs.join(" ? ")} <span aria-hidden="true">?</span></a>
+            <a class="text-link" href={`/${lang}/learn#${beat.id}`}>{copy.story} <span aria-hidden="true">?</span></a>
+          </div>
         </article>
       ))}
     </div>

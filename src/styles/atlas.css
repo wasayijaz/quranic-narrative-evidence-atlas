@@ -442,7 +442,8 @@ h1 { max-width: 72rem; margin-bottom: 2rem; font-family: "Geist", "Segoe UI", sy
 .quran-anchor-row { padding: 1.6rem 0; display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; gap: 1.5rem; align-items: center; border-bottom: 1px solid var(--line); }
 .quran-anchor-row h3 { margin: 0 0 0.4rem; font-size: clamp(1.5rem, 2.8vw, 2.8rem); font-weight: 450; letter-spacing: -0.06em; line-height: 0.95; }
 .quran-anchor-row p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-.quran-anchor-row .button { white-space: nowrap; }
+.quran-anchor-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.8rem 1rem; }
+.quran-anchor-actions .button { white-space: nowrap; }
 
 .research-hero-index { min-height: 18rem; transform: rotate(-1deg); }
 .research-question-section { width: min(100% - 3rem, 88rem); margin: 0 auto; padding: clamp(4rem, 8vw, 7rem) 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.45fr); gap: clamp(3rem, 8vw, 9rem); border-top: 1px solid var(--line); }
@@ -524,6 +525,13 @@ h1 { max-width: 72rem; margin-bottom: 2rem; font-family: "Geist", "Segoe UI", sy
 .lesson-outline-card > p:not(.panel-kicker) { max-width: 32rem; color: #c6c2b8; font-size: 0.9rem; }
 .lesson-outline-card .text-link { color: var(--paper); font-size: 0.78rem; }
 .outline-rule { height: 1px; margin: 2rem 0; background: rgba(247, 243, 234, 0.25); }
+.lesson-outline-selected { margin-bottom: 2rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(247, 243, 234, 0.25); }
+.lesson-outline-selected ol { margin: 0; padding: 0; list-style: none; }
+.lesson-outline-selected li { padding: 0.65rem 0; display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: 0.8rem; align-items: baseline; border-bottom: 1px solid rgba(247, 243, 234, 0.14); }
+.lesson-outline-selected li > span:first-child { color: #e08367; font-size: 0.7rem; letter-spacing: 0.08em; }
+.lesson-outline-selected li strong { color: var(--paper); font-size: 0.92rem; font-weight: 500; }
+.lesson-outline-selected li > span:last-child { color: #c6c2b8; font-size: 0.75rem; white-space: nowrap; }
+.lesson-outline-selected > p:last-child { margin: 0; color: #c6c2b8; font-size: 0.82rem; }
 
 [dir="rtl"] .explore-hero-panel h2,
 [dir="rtl"] .intent-card h3,
@@ -585,7 +593,8 @@ h1 { max-width: 72rem; margin-bottom: 2rem; font-family: "Geist", "Segoe UI", sy
   .intent-grid, .principles-grid, .source-registry-grid { grid-template-columns: 1fr; }
   .intent-card { min-height: 18rem; }
   .story-preview-row, .quran-anchor-row { grid-template-columns: 2.2rem minmax(0, 1fr); }
-  .story-preview-row > a, .quran-anchor-row .button { grid-column: 2; justify-self: start; }
+  .story-preview-row > a, .quran-anchor-actions { grid-column: 2; justify-self: start; }
+  .quran-anchor-actions { justify-content: flex-start; }
   .story-canvas-section { grid-template-columns: 1fr; gap: 3rem; }
   .story-outline, .lesson-setup-panel { position: static; }
   .story-outline h2 { margin-bottom: 1.2rem; }

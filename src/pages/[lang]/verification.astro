@@ -148,7 +148,7 @@ const ledgerCards = atlas.gateResults.map((result) => {
 
     <div class="ledger-list">
       {ledgerCards.map(({ result, claim, rows, lanes }) => (
-        <article class:list={["ledger-row", result.publishable ? "claim-published" : "claim-withheld"]}>
+        <article id={claim?.id} class:list={["ledger-row", result.publishable ? "claim-published" : "claim-withheld"]}>
           <div class="ledger-status" data-state={result.state}>
             <span class="status-dot" aria-hidden="true"></span>
             <span>{stateLabels[result.state]}</span>
