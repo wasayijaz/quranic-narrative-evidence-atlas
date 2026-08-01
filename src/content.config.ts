@@ -10,7 +10,7 @@ const sourceClass = z.enum(["quran", "hadith", "tafsir", "history", "academic"])
 const sourceSchema = z
   .object({
     id: nonEmptyString,
-    work_title_ar: nonEmptyString,
+    work_title_ar: nonEmptyString.nullable(),
     work_title_en: nonEmptyString,
     author: nonEmptyString,
     author_died_hijri: z.number().int().nullable(),
@@ -21,7 +21,7 @@ const sourceSchema = z
       .object({
         id: nonEmptyString,
         publisher: nonEmptyString,
-        place: nonEmptyString,
+        place: nonEmptyString.nullable(),
         language: z.enum(["ar", "en", "ur"]),
         volumes: z.number().int().positive().nullable(),
       })
