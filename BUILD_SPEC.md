@@ -29,11 +29,11 @@ These are project constraints, not implementation preferences. Violating one is 
 
 **In scope ? the evidence foundation and first product slice:**
 
-One dossier (`ashab-al-kahf`), adult reading depth only, English and Urdu, claim-level sourcing, verification ledger, a build that enforces the located gate, and the bilingual product surfaces listed in `PRODUCT_BUILD_SCOPE.md`. Ugly is acceptable. Correct is not optional.
+One researched dossier (`ashab-al-kahf`) plus Quran-anchor-only shells for the first M1 stories, adult reading depth only, English and Urdu, claim-level sourcing, verification ledger, a build that enforces the located gate, and the bilingual product surfaces listed in `PRODUCT_BUILD_SCOPE.md`. Only the researched dossier carries reported claims. Ugly is acceptable. Correct is not optional.
 
 **Explicitly out of scope. Do not build these.**
 
-Database of any kind ? CMS ? authentication ? site search ? maps and route rendering ? footprint animation ? the illustration system ? other dossiers ? a design system beyond the tokens in ?7 ? mobile apps ? analytics ? comments ? newsletter ? a domain.
+Database of any kind ? CMS ? authentication ? site search ? maps and route rendering ? footprint animation ? the illustration system ? additional completed research dossiers ? a design system beyond the tokens in ?7 ? mobile apps ? analytics ? comments ? newsletter ? a domain.
 
 Adding anything from that list is scope violation, not initiative. If a task seems to require one, stop and ask.
 
@@ -235,6 +235,8 @@ Two distinct failure modes. Keeping them distinct is the entire discipline: **fo
 2. `/en/verification` and `/ur/verification` ? the derived global ledger view, **including the gaps**: total claims, located, secondary, unlocated, parity gaps. The number that matters is how many are unverified, and it stays on the page.
 
 The current product layer additionally renders `/en|ur/` (Explore), `/en|ur/quran` (Quran passage anchors), `/en|ur/learn` (Story Canvas), `/en|ur/teach` (local Teacher Studio), and `/en|ur/research` (Evidence Desk). These routes may compose Quran references and ledger metadata, but they must not bypass the gate or publish an unlocated claim statement.
+
+The story catalog also renders `/en|ur/stories/thamud-al-hijr` and `/en|ur/stories/yusuf` as Quran-anchor-only editions. They carry no reported claims until their source records and ledgers are researched.
 
 **Hard requirements:**
 

@@ -5,6 +5,13 @@ import { correctionRows } from "./ledger";
 
 export type AtlasLocale = "en" | "ur";
 
+export async function loadDossierCatalog() {
+  const dossierEntries = await getCollection("dossiers");
+  return dossierEntries
+    .map((entry) => entry.data)
+    .sort((a, b) => String(a.id).localeCompare(String(b.id)));
+}
+
 export async function loadAtlas(dossierId = "ashab-al-kahf") {
   const [claimEntries, ledgerEntries, sourceEntries, dossierEntries, beatEntries] = await Promise.all([
     getCollection("claims"),

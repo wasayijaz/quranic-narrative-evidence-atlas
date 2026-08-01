@@ -1,6 +1,6 @@
 # Quranic Narrative and Evidence Atlas
 
-This repository contains the first public product slice described in `PRODUCT_BUILD_SCOPE.md`, built on the M0 evidence gate in `BUILD_SPEC.md`.
+This repository contains the first public product slice described in `PRODUCT_BUILD_SCOPE.md`, built on the M0 evidence gate in `BUILD_SPEC.md`. It includes one researched dossier and two explicitly Quran-anchor-only M1 story shells.
 
 The build is intentionally content-first:
 

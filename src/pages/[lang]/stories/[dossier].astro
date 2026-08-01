@@ -1,0 +1,109 @@
+---
+import { getCollection } from "astro:content";
+import AtlasLayout from "../../../layouts/AtlasLayout.astro";
+import { loadAtlas } from "../../../lib/atlas";
+
+export async function getStaticPaths() {
+  const dossierEntries = await getCollection("dossiers");
+  return ["en", "ur"].flatMap((lang) => dossierEntries.map((entry) => ({
+    params: { lang, dossier: entry.data.id },
+  })));
+}
+
+const lang = Astro.params.lang === "ur" ? "ur" : "en";
+const dossierId = Astro.params.dossier ?? "ashab-al-kahf";
+const isUrdu = lang === "ur";
+const atlas = await loadAtlas(dossierId);
+const dossier = atlas.dossiers.find((entry) => entry.id === dossierId) ?? {
+  id: dossierId,
+  title: { en: dossierId, ur: dossierId },
+  description: { en: "", ur: "" },
+  status: "quran-anchor-only",
+  reading_depth: "adult",
+};
+const disclosure = dossier.disclosure?.[lang] ?? (isUrdu
+  ? "?? ?????? ???? ??? ????? ?????? ?? ???? ????? ??? ????? ???? ??? ???? ?? ??? ??? ??? ???"
+  : "This story currently contains Quran anchors only; reported material stays out until separately checked.");
+const copy = isUrdu
+  ? {
+      eyebrow: "?????? ? ????? ????? ??????",
+      lead: "?? ???? ????? ?????? ?? ??? ??????? story spine ????? ??? ??? ?? ?????? ?? ?????? ????? ?? ??? ?? ???? ???? ??? ?? ?? ?? ?? ?? ????? ?????? ???? ?? ???",
+      back: "Explore ?? ???? ?????",
+      quran: "???? ?? ????? ???",
+      research: "????? ???",
+      spine: "????? ??????? ?????",
+      anchor: "????? ?????",
+      open: "???? ??? ??????",
+      noClaims: "?? ?????? ??? ???? ???? ????? claim ???? ?????",
+    }
+  : {
+      eyebrow: "LEARN ? QURAN-ANCHOR EDITION",
+      lead: "This page builds a first story spine from Quran passage anchors. Later tafsir or historical layers stay out until their source record is complete.",
+      back: "Return to Explore",
+      quran: "Quran passages",
+      research: "Evidence Desk",
+      spine: "Quran story spine",
+      anchor: "Quran anchor",
+      open: "Open in Quran reader",
+      noClaims: "No reported claims are included in this edition yet.",
+    };
+const statusLabel = isUrdu
+  ? (dossier.status === "quran-anchor-only" ? "??? ????? ?????" : "??????? product slice")
+  : (dossier.status === "quran-anchor-only" ? "Quran anchors only" : "First product slice");
+---
+
+<AtlasLayout
+  lang={lang}
+  title={`${dossier.title[lang]} ? Quranic Evidence Atlas`}
+  description={dossier.description[lang]}
+  current="learn"
+  disclosure={disclosure}
+  disclosureLinkLabel={isUrdu ? "????? ???? ?? ??????" : "Public verification ledger"}
+  languageHrefOverride={`/${isUrdu ? "en" : "ur"}/stories/${dossierId}`}
+>
+  <section class="generic-story-hero">
+    <div>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{dossier.title[lang]}</h1>
+      <p class="hero-lead">{copy.lead}</p>
+      <div class="hero-actions">
+        <a class="button button-dark" href={`/${lang}`}>{copy.back}</a>
+        <a class="text-link" href={`/${lang}/quran`}>{copy.quran} <span aria-hidden="true">?</span></a>
+      </div>
+    </div>
+    <aside class="generic-story-status" aria-label={isUrdu ? "?????? ?? ????" : "Story status"}>
+      <span>{statusLabel}</span>
+      <strong>{String(atlas.beats.length).padStart(2, "0")}</strong>
+      <span>{isUrdu ? "????? beats" : "Quran-anchored beats"}</span>
+    </aside>
+  </section>
+
+  <section class="generic-story-section" aria-labelledby="generic-story-title">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.spine}</p>
+      <h2 id="generic-story-title">{isUrdu ? "????? ????? ????? ??? ????" : "Anchor first. Interpretation later."}</h2>
+      <p>{dossier.description[lang]}</p>
+    </div>
+    <div class="generic-story-list">
+      {atlas.beats.map((beat) => (
+        <article class="generic-story-row" id={beat.id}>
+          <span class="story-preview-order">{String(beat.order).padStart(2, "0")}</span>
+          <div>
+            <h3>{beat.title[lang]}</h3>
+            <p>{beat.summary[lang]}</p>
+          </div>
+          <div class="generic-story-actions">
+            <span>{copy.anchor}</span>
+            <a class="button button-outline" href={beat.quran_link} rel="noreferrer" target="_blank"><bdi>{beat.ayah_refs.join(" ? ")}</bdi> <span aria-hidden="true">?</span></a>
+          </div>
+        </article>
+      ))}
+    </div>
+    {atlas.summary.total === 0 && <p class="generic-story-note">{copy.noClaims}</p>}
+  </section>
+
+  <section class="generic-story-closing" aria-label={isUrdu ? "???? ???" : "Next step"}>
+    <p>{isUrdu ? "?? route ????? ????? ?????? ??? ???? research edition ???? ???? ???" : "This route shows Quran anchors; the full research edition is still to come."}</p>
+    <a class="button button-dark" href={`/${lang}/research`}>{copy.research} <span aria-hidden="true">?</span></a>
+  </section>
+</AtlasLayout>

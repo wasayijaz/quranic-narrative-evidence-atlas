@@ -21,6 +21,9 @@ for (const lang of ["en", "ur"]) {
   for (const route of ["", "quran", "learn", "teach", "research"]) {
     routes[`${lang}/${route || "explore"}`] = await readRoute(lang, route);
   }
+  for (const route of ["stories/thamud-al-hijr", "stories/yusuf"]) {
+    routes[`${lang}/${route}`] = await readRoute(lang, route);
+  }
 }
 
 const englishExplore = routes["en/explore"];
@@ -28,6 +31,8 @@ const englishLearn = routes["en/learn"];
 const englishQuran = routes["en/quran"];
 const englishTeach = routes["en/teach"];
 const englishResearch = routes["en/research"];
+const englishThamud = routes["en/stories/thamud-al-hijr"];
+const englishYusuf = routes["en/stories/yusuf"];
 const englishVerification = await readRoute("en", "verification");
 const urduLearn = routes["ur/learn"];
 const urduResearch = routes["ur/research"];
@@ -43,6 +48,9 @@ assertIncludes(englishExplore, "Read the story. Keep the source in view.", "Expl
 assertIncludes(englishExplore, "Story Canvas", "Explore page is missing the Story Canvas entry point.");
 assertIncludes(englishExplore, "Teacher Studio", "Explore page is missing the Teacher Studio entry point.");
 assertIncludes(englishExplore, "Evidence Desk", "Explore page is missing the Evidence Desk entry point.");
+assertIncludes(englishExplore, "Thamud / al-Hijr", "Explore catalog is missing Thamud / al-Hijr.");
+assertIncludes(englishExplore, "Yusuf", "Explore catalog is missing Yusuf.");
+assertIncludes(englishExplore, "Quran anchors only", "Explore catalog is missing the Quran-only status boundary.");
 
 for (const reference of ["18:9", "18:10?12", "18:16", "18:17?18", "18:19?21", "18:22"]) {
   assertIncludes(englishLearn, reference, `Story Canvas is missing Quran anchor ${reference}.`);
@@ -65,6 +73,11 @@ assertIncludes(englishLearn, "/en/quran#ak-beat-01", "Story Canvas is missing th
 assertIncludes(englishQuran, "id=" + '"ak-beat-01"', "Quran page is missing anchor ids.");
 assertIncludes(urduLearn, "????? ?????", "Urdu Story Canvas is missing native Quran anchor copy.");
 assertIncludes(urduResearch, "????? ???", "Urdu Research page is missing native evidence-desk copy.");
+assertIncludes(englishThamud, "7:73?79", "Thamud story shell is missing its first Quran anchor.");
+assertIncludes(englishThamud, "15:80?84", "Thamud story shell is missing its al-Hijr anchor.");
+assertIncludes(englishThamud, "No reported claims are included", "Thamud story shell is missing its claim boundary.");
+assertIncludes(englishYusuf, "12:1?7", "Yusuf story shell is missing its opening anchor.");
+assertIncludes(englishYusuf, "12:102?111", "Yusuf story shell is missing its closing anchor.");
 
 const claim = parse(await readFile(path.join(projectRoot, "..", "content", "dossiers", "ashab-al-kahf", "claims", "ak-001.yml"), "utf8"));
 const ledger = parse(await readFile(path.join(projectRoot, "..", "content", "dossiers", "ashab-al-kahf", "ledger.yml"), "utf8"));

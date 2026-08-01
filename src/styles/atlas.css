@@ -398,6 +398,33 @@ h1 { max-width: 72rem; margin-bottom: 2rem; font-family: "Geist", "Segoe UI", sy
 .product-action-section h2 { margin-top: 0.3rem; }
 .product-action-section .button { white-space: nowrap; }
 
+.dossier-catalog-section { width: min(100% - 3rem, 88rem); margin: 0 auto; padding: clamp(5rem, 11vw, 10rem) 0; border-top: 1px solid var(--line); }
+.dossier-catalog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.dossier-catalog-card { min-height: 21rem; padding: clamp(1.4rem, 3vw, 2.4rem); display: flex; flex-direction: column; border: 1px solid var(--line-strong); background: var(--paper-deep); }
+.dossier-catalog-card:nth-child(2) { background: #e2e3dc; }
+.dossier-catalog-card:nth-child(3) { background: rgba(255, 253, 247, 0.58); }
+.dossier-catalog-card h3 { max-width: 28rem; margin: 3rem 0 0.8rem; font-size: clamp(1.8rem, 3.5vw, 4rem); font-weight: 450; letter-spacing: -0.065em; line-height: 0.95; }
+.dossier-catalog-card p { max-width: 26rem; margin: 0 0 2rem; color: var(--muted); font-size: 0.9rem; }
+.dossier-catalog-card .text-link { margin-top: auto; font-size: 0.78rem; }
+
+.generic-story-hero { width: min(100% - 3rem, 88rem); margin: 0 auto; min-height: min(40rem, calc(100vh - 5rem)); padding: clamp(5rem, 12vw, 10rem) 0 clamp(5rem, 9vw, 8rem); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr); gap: clamp(3rem, 8vw, 9rem); align-items: center; }
+.generic-story-hero h1 { max-width: 72rem; }
+.generic-story-status { min-height: 20rem; padding: clamp(1.5rem, 3vw, 3rem); display: flex; flex-direction: column; justify-content: flex-end; gap: 1rem; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); box-shadow: 1.1rem 1.1rem 0 rgba(181, 77, 53, 0.72); transform: rotate(-1.3deg); }
+.generic-story-status > span:first-child { color: #e08367; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.generic-story-status strong { font-size: clamp(5rem, 10vw, 9rem); font-weight: 300; letter-spacing: -0.1em; line-height: 0.8; }
+.generic-story-status > span:last-child { max-width: 13rem; color: #c6c2b8; font-size: 0.82rem; }
+.generic-story-section { width: min(100% - 3rem, 88rem); margin: 0 auto; padding: clamp(5rem, 11vw, 10rem) 0; border-top: 1px solid var(--line); }
+.generic-story-list { border-top: 1px solid var(--ink); }
+.generic-story-row { padding: 1.6rem 0; display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; gap: 1.5rem; align-items: center; border-bottom: 1px solid var(--line); scroll-margin-top: 2rem; }
+.generic-story-row h3 { margin: 0 0 0.45rem; font-size: clamp(1.5rem, 2.8vw, 2.8rem); font-weight: 450; letter-spacing: -0.06em; line-height: 0.95; }
+.generic-story-row p { max-width: 40rem; margin: 0; color: var(--muted); font-size: 0.9rem; }
+.generic-story-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.7rem; }
+.generic-story-actions > span { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em; }
+.generic-story-actions .button { white-space: nowrap; }
+.generic-story-note { margin: 1.5rem 0 0; color: var(--muted); font-style: italic; }
+.generic-story-closing { width: min(100% - 3rem, 88rem); margin: 0 auto; padding: 1.2rem 0 5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; border-top: 1px solid var(--line-strong); }
+.generic-story-closing p { max-width: 36rem; margin: 0; color: var(--muted); }
+
 .canvas-hero,
 .quran-hero,
 .research-hero,
@@ -571,6 +598,10 @@ h1 { max-width: 72rem; margin-bottom: 2rem; font-family: "Geist", "Segoe UI", sy
   .research-question-section,
   .research-desk-section,
   .teacher-studio-section { width: min(100% - 2rem, 88rem); }
+  .dossier-catalog-section,
+  .generic-story-hero,
+  .generic-story-section,
+  .generic-story-closing { width: min(100% - 2rem, 88rem); }
 
   .explore-hero,
   .canvas-hero,
@@ -583,18 +614,22 @@ h1 { max-width: 72rem; margin-bottom: 2rem; font-family: "Geist", "Segoe UI", sy
   .lesson-outline-section,
   .research-question-section,
   .research-claim-body,
-  .lesson-builder { grid-template-columns: 1fr; }
+  .lesson-builder,
+  .generic-story-hero { grid-template-columns: 1fr; }
 
   .explore-hero-panel,
   .quran-note,
   .teach-hero-note,
   .research-hero-index,
   .canvas-index { min-height: 18rem; box-shadow: 0.7rem 0.7rem 0 rgba(181, 77, 53, 0.72); }
-  .intent-grid, .principles-grid, .source-registry-grid { grid-template-columns: 1fr; }
+  .intent-grid, .principles-grid, .source-registry-grid, .dossier-catalog-grid { grid-template-columns: 1fr; }
   .intent-card { min-height: 18rem; }
   .story-preview-row, .quran-anchor-row { grid-template-columns: 2.2rem minmax(0, 1fr); }
   .story-preview-row > a, .quran-anchor-actions { grid-column: 2; justify-self: start; }
   .quran-anchor-actions { justify-content: flex-start; }
+  .generic-story-row { grid-template-columns: 2.2rem minmax(0, 1fr); }
+  .generic-story-actions { grid-column: 2; align-items: flex-start; }
+  .generic-story-closing { align-items: flex-start; flex-direction: column; }
   .story-canvas-section { grid-template-columns: 1fr; gap: 3rem; }
   .story-outline, .lesson-setup-panel { position: static; }
   .story-outline h2 { margin-bottom: 1.2rem; }

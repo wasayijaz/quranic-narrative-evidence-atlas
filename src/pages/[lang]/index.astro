@@ -1,6 +1,6 @@
 ---
 import AtlasLayout from "../../layouts/AtlasLayout.astro";
-import { loadAtlas } from "../../lib/atlas";
+import { loadAtlas, loadDossierCatalog } from "../../lib/atlas";
 
 export function getStaticPaths() {
   return [{ params: { lang: "en" } }, { params: { lang: "ur" } }];
@@ -9,6 +9,7 @@ export function getStaticPaths() {
 const lang = Astro.params.lang === "ur" ? "ur" : "en";
 const isUrdu = lang === "ur";
 const atlas = await loadAtlas("ashab-al-kahf");
+const dossierCatalog = await loadDossierCatalog();
 const dossier = atlas.dossiers.find((entry) => entry.id === "ashab-al-kahf") ?? {
   title: { en: "The Companions of the Cave", ur: "?????? ???" },
   description: { en: "", ur: "" },
@@ -49,6 +50,11 @@ const copy = isUrdu
       finalTitle: "???? ???: ?????? ???????",
       finalBody: "?? ???? ??? dossier ??? ??? ?? ?? ??? ledger ???? ????",
       finalAction: "?????? ???? ????",
+      catalogEyebrow: "??????? ??????",
+      catalogTitle: "??? atlas? ??? ??????? ??????",
+      catalogLead: "??? ?????? ???? ????? ?????? ?? ???? ??? ??? ?????? ??? ?????? ????? ??? ????? ?? ??? ???? ??? ???",
+      catalogStatus: { "product-slice-foundation": "???? product slice", "quran-anchor-only": "??? ????? ?????" },
+      catalogAction: "?????? ??????",
     }
   : {
       eyebrow: "QURANIC NARRATIVE ATLAS",
@@ -81,6 +87,11 @@ const copy = isUrdu
       finalTitle: "Start with the story.",
       finalBody: "This is one dossier so far; it is no longer only a ledger.",
       finalAction: "Begin reading",
+      catalogEyebrow: "Story catalog",
+      catalogTitle: "One atlas, more than one way into the Quran.",
+      catalogLead: "A new story enters with Quran anchors first. Tafsir and historical layers come only after separate source research.",
+      catalogStatus: { "product-slice-foundation": "First product slice", "quran-anchor-only": "Quran anchors only" },
+      catalogAction: "Open story",
     };
 ---
 
@@ -148,6 +159,28 @@ const copy = isUrdu
           <a href={beat.quran_link} rel="noreferrer" target="_blank">{beat.ayah_refs.join(" ? ")} <span aria-hidden="true">?</span></a>
         </article>
       ))}
+    </div>
+  </section>
+
+  <section class="dossier-catalog-section" aria-labelledby="catalog-title">
+    <div class="section-heading">
+      <p class="eyebrow">{copy.catalogEyebrow}</p>
+      <h2 id="catalog-title">{copy.catalogTitle}</h2>
+      <p>{copy.catalogLead}</p>
+    </div>
+    <div class="dossier-catalog-grid">
+      {dossierCatalog.map((entry) => {
+        const href = entry.id === "ashab-al-kahf" ? `/${lang}/learn` : `/${lang}/stories/${entry.id}`;
+        const status = copy.catalogStatus[entry.status] ?? entry.status;
+        return (
+          <article class="dossier-catalog-card">
+            <div class="card-topline"><span>{status}</span><span>{entry.reading_depth}</span></div>
+            <h3>{entry.title[lang]}</h3>
+            <p>{entry.description[lang]}</p>
+            <a class="text-link" href={href}>{copy.catalogAction} <span aria-hidden="true">?</span></a>
+          </article>
+        );
+      })}
     </div>
   </section>
 

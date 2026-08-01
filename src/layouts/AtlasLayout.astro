@@ -8,9 +8,10 @@ interface Props {
   current: "explore" | "quran" | "learn" | "teach" | "research" | "dossier" | "verification";
   disclosure?: string;
   disclosureLinkLabel?: string;
+  languageHrefOverride?: string;
 }
 
-const { lang, title, description, current, disclosure, disclosureLinkLabel } = Astro.props;
+const { lang, title, description, current, disclosure, disclosureLinkLabel, languageHrefOverride } = Astro.props;
 const isUrdu = lang === "ur";
 const otherLang = isUrdu ? "en" : "ur";
 const routePaths = {
@@ -25,7 +26,7 @@ const routePaths = {
 const dossierHref = `/${lang}/ashab-al-kahf`;
 const verificationHref = `/${lang}/verification`;
 const languagePath = routePaths[current];
-const languageHref = `/${otherLang}${languagePath ? `/${languagePath}` : ""}`;
+const languageHref = languageHrefOverride ?? `/${otherLang}${languagePath ? `/${languagePath}` : ""}`;
 const navigation = [
   { key: "explore", href: `/${lang}`, en: "Explore", ur: "??????" },
   { key: "quran", href: `/${lang}/quran`, en: "Quran", ur: "????" },
